@@ -2,9 +2,10 @@ package Test;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
+import static org.openqa.selenium.support.locators.RelativeLocator.*;
 
 public class login {
 
@@ -16,86 +17,129 @@ public class login {
 		driver.get("https://www.rossmann.pl/logowanie");
 
 		driver.manage().window().maximize();
+		
+		WebElement loginField = driver.findElement(By.id("login-user"));
+		
+		WebElement passField = driver.findElement(By.id("login-password"));
+		
+		WebElement loginBtn = driver.findElement(By.xpath("//span[text()='Zaloguj się']"));
+		
+		WebElement showPassBtn = driver.findElement(By.cssSelector("div.input-group-append"));
+		
+		String invalidFeedbackCSS = ".invalid-feedback";
+		
+		String login = "cytest123";
+		
+		String singleLetter = "r";
+		
+		String randomText = "randomText";
+		
+		String longText = "Loremipsumdolorsitamet,consectetueradipiscingelit.Aeneancommodoligulaegetdolor.Aeneanmassa.Cumsociis";
+		
+		String validation_invalid_login_and_password = "Proszę wpisać poprawny adres e-mail lub nazwę użytkownika.";
+		
+		String validation_invalid_password = "Błąd w obecnym haśle.";
+		
+		String validation_min_length_requirement = "Nazwa użytkownika powinna składać się z co najmniej 4 znaków.";
+		
+		String validation_max_length_requirement =  "Nazwa użytkownika powinna składać się z maksymalnie 100 znaków.";
+				
+		String validation_invalid_login_credentials = "Niepoprawne dane logowania.";
+		
 
 		// TestCase 1 - Empty fields
-
-		driver.findElement(By.xpath("//span[text()='Zaloguj się']")).click();
+		
+		loginBtn.click();
 
 		Thread.sleep(1500);
+		
 		Assert.assertEquals(
-				driver.findElement(By.xpath("//div[1]/div/div[contains(@class,'invalid-feedback')]")).getText(),
-				"Proszę wpisać poprawny adres e-mail lub nazwę użytkownika.");
-
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(loginField)).getText(),
+				validation_invalid_login_and_password);
+		
 		Assert.assertEquals(
-			driver.findElement(By.xpath("//div[2]/div/div[contains(@class,'invalid-feedback')]")).getText(),
-			"Błąd w obecnym haśle.");
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(passField)).getText(),
+				validation_invalid_password);
 				
 		
-		// TestCase 2 - Incorecct Login and Password
-		
-		driver.findElement(By.id("login-user")).sendKeys("randomText");
-		Assert.assertEquals(driver.findElement(By.id("login-user")).getAttribute("value"), "randomText");
+		// TestCase 2 - Too short credentials
 
-		driver.findElement(By.id("login-password")).sendKeys("randomText");
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("value"), "randomText");
+		loginField.sendKeys(singleLetter);
 
-		driver.findElement(By.xpath("//span[text()='Zaloguj się']")).click();
+		passField.sendKeys(singleLetter);
+
+		loginBtn.click();
 
 		Thread.sleep(1500);
-		Assert.assertEquals(driver.findElement(By.cssSelector("div.invalid-feedback")).getText(),
-				"Niepoprawne dane logowania.");
-
-		driver.findElement(By.id("login-user")).clear();
-		driver.findElement(By.id("login-password")).clear();
-
+				
+		Assert.assertEquals(
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(loginField)).getText(),
+				validation_min_length_requirement);
 		
-		// TestCase 3 - Incorrect password
+			
+		// TestCase 3 - Too long login
 
-		driver.findElement(By.id("login-user")).sendKeys("cytest123");
-		Assert.assertEquals(driver.findElement(By.id("login-user")).getAttribute("value"), "cytest123");
+		loginField.sendKeys(longText);
 
-		driver.findElement(By.id("login-password")).sendKeys("randomText");
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("value"), "randomText");
-
-		driver.findElement(By.xpath("//span[text()='Zaloguj się']")).click();
+		loginBtn.click();
 
 		Thread.sleep(1500);
-		Assert.assertEquals(driver.findElement(By.cssSelector("div.invalid-feedback")).getText(),
-				"Niepoprawne dane logowania.");
-
-		driver.findElement(By.id("login-user")).clear();
-
+						
+		Assert.assertEquals(
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(loginField)).getText(),
+				validation_max_length_requirement);
 		
-		// TestCase 4 - Show password Functionality
-
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("type"), "password");
-
-		driver.findElement(By.cssSelector("div.input-group-append")).click();
-
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("type"), "text");
+		loginField.clear();
+		passField.clear();
+				
 		
-		driver.findElement(By.cssSelector("div.input-group-append")).click();
+		// TestCase 4 - Incorrect Login and Password
 		
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("type"), "password");
+		loginField.sendKeys(randomText);
+		Assert.assertEquals(loginField.getAttribute("value"), randomText);
 
-		driver.findElement(By.id("login-password")).clear();
+		passField.sendKeys(randomText);
+		Assert.assertEquals(passField.getAttribute("value"), randomText);
 
-		
-		// TestCase 5 - Too short Login
-
-		driver.findElement(By.id("login-user")).sendKeys("c");
-		Assert.assertEquals(driver.findElement(By.id("login-user")).getAttribute("value"), "c");
-
-		driver.findElement(By.id("login-password")).sendKeys("c");
-		Assert.assertEquals(driver.findElement(By.id("login-password")).getAttribute("value"), "c");
-
-		driver.findElement(By.xpath("//span[text()='Zaloguj się']")).click();
+		loginBtn.click();
 
 		Thread.sleep(1500);
-		Assert.assertEquals(driver.findElement(By.cssSelector("div.invalid-feedback")).getText(),
-				"Nazwa użytkownika powinna składać się z co najmniej 4 znaków.");
+
+		Assert.assertEquals(
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(loginField)).getText(),
+				validation_invalid_login_credentials);
+
+		loginField.clear();
+
+		
+		// TestCase 5 - Incorrect password
+
+		loginField.sendKeys(login);
+		Assert.assertEquals(loginField.getAttribute("value"), login);
+
+		loginBtn.click();
+
+		Thread.sleep(1500);
+		
+		Assert.assertEquals(
+				driver.findElement(with(By.cssSelector(invalidFeedbackCSS)).below(loginField)).getText(),
+				validation_invalid_login_credentials);
+
+		
+		// TestCase 6 - Show password Functionality
+
+		Assert.assertEquals(passField.getAttribute("type"), "password");
+
+		showPassBtn.click();
+
+		Assert.assertEquals(passField.getAttribute("type"), "text");
+		
+		showPassBtn.click();
+		
+		Assert.assertEquals(passField.getAttribute("type"), "password");
 		
 		driver.close();
+
 
 	}
 
