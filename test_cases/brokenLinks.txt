@@ -1,0 +1,18 @@
+# BrokenLinksTest:
+
+Preconditions:
+1. Navigate to url 'www.rossmann.pl/'
+
+
+TestCase 1 - Check for broken links in main categories menu
+checkMainCategoriesMenuLinks()
+	
+	1. Verify that all links in the main categories menu are functional
+	
+	
+TestCase 2 - Check for broken links in subcategories menu
+checkSubcategoriesMenuLinks()
+	
+	1. Verify that all links in the subcategories menu are functional
+	
+	

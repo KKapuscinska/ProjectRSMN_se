@@ -1,0 +1,44 @@
+# ContactPageTest:
+
+Preconditions:
+1. Navigate to url 'www.rossmann.pl/kontakt'
+
+
+TestCase 1 - Sending blank contact form
+emptyFieldsValidationMessages()
+	
+	1. Send the contact form without filling any fields.
+	2. Verify the appearance of email, message, and captcha validation messages.
+
+
+TestCase 2 - Phone number field validation
+phoneNumberFieldValidation()
+
+	1. Check the validation of the Phone Number field for:
+		- letters
+		- special characters
+		- Length
+		
+		
+TestCase 3 - Email field validation
+emailFieldValidation()
+
+	1. Check the validation of the Email field for:
+		- Presence of '@' symbol
+		
+		
+TestCase 4 - Message field validation
+messageFieldLengthValidation()
+
+	1. Check the validation of the Message field for:
+		- Too short value (<20 char)
+		- Too long value (>5 000char)
+		of Message field
+
+
+TestCase 5 - Filling out the Contact Form
+captchaValidationMessageWhenOtherFieldsValid()
+
+    1. Enter correct values into all fields of the contact form.
+    2. Submit the form.
+    3. Verify that only the captcha validation message is displayed.

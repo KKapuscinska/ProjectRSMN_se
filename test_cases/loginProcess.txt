@@ -1,0 +1,48 @@
+# LoginTest:
+
+Preconditions:
+1. Navigate to url 'www.rossmann.pl/logowanie'
+
+
+TestCase 1 - Empty Fields
+emptyFieldsLoginFailure()
+
+    1. Click the login button without entering any credentials
+	2. Verify appearance of error messages
+    
+    
+TestCase 2 - Too short login
+tooShortLoginFailure()
+
+    1. Enter one letter into the login field
+	2. Click the login button
+	3. Verify appearance of error message
+
+
+TestCase 3 - Too long login
+tooLongLoginFailure()
+
+    1. Enter >100 characters into the login field
+    2. Click the login button
+    3. Verify appearance of error message
+
+
+TestCase 4 - Incorrect Password
+incorrectPasswordLoginFailure()
+
+    1. Enter incorrect login or password
+    2. Click the login button
+    3. Verify appearance of error message
+
+
+TestCase 5 - Show Password Functionality
+verifyPasswordVisibilityFunctionality()
+
+    1. Enter password into the password field 
+    2. Click 'show password' option
+    3. Verify visibility of the password
+    
+    
+
+
+
