@@ -2,8 +2,6 @@ package test;
 
 import jdk.jfr.Description;
 
-import static org.testng.Assert.assertEquals;
-
 import java.time.Duration;
 import java.util.List;
 
@@ -11,11 +9,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -27,7 +23,7 @@ public class ShoppingProcessTest {
 
 	WebDriver driver;
 
-	@BeforeTest
+	@BeforeTest(groups = {"smoketests"})
 	public void setup() {
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
@@ -35,13 +31,13 @@ public class ShoppingProcessTest {
 		driver.manage().window().maximize();
 	}
 
-	@BeforeMethod
+	@BeforeMethod(groups = {"smoketests"})
 	public void beforeTest() {
 		driver.get("https://www.rossmann.pl/szukaj");
 
 	}
 
-	@Test(priority = 0)
+	@Test(priority = 0, groups = {"smoketests"})
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
 	public void addAndRemoveProductFromShoppingCart() {
 
@@ -78,7 +74,7 @@ public class ShoppingProcessTest {
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
 
-	@Test
+	@Test(groups = {"smoketests"})
 	@Description("Verify that the correct product details are displayed in the shopping cart after adding it.")
 	public void verifyProductDetailsInShoppingCart() {
 
@@ -120,7 +116,7 @@ public class ShoppingProcessTest {
 
 	@Test
 	@Description("Verify that the user can remove a product from the shopping cart by decreasing its quantity to zero.")
-	public void removeProductFromShoppingCartByDecreasingQuantityToZero() {
+	public void decreaseProductQuantityInShoppingCartToZero() {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
@@ -184,7 +180,7 @@ public class ShoppingProcessTest {
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
 
-	@Test
+	@Test(groups = {"smoketests"})
 	@Description("Verify that the total price is updated correctly after modifying the quantity of products in the shopping cart.")
 	public void verifyTotalPriceInShoppingCart() {
 
@@ -236,6 +232,11 @@ public class ShoppingProcessTest {
 
 	}
 
+	@Description("Add maximum quantiti of one product to  shopping cart.")
+	public void addMaxQuantityToShoppingCart() {
+			
+	}
+	
 	@Description("Verify that the user can proceed to checkout from the shopping cart.")
 	public void proceedToCheckoutFromShoppingCart() {
 	}
@@ -244,7 +245,7 @@ public class ShoppingProcessTest {
 	public void selectShippingMethodDuringCheckout() {
 	}
 
-	@AfterTest
+	@AfterTest(groups = {"smoketests"})
 	public void tearDown() {
 
 		if (driver != null) {
