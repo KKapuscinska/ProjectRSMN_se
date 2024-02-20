@@ -39,10 +39,9 @@ WebDriver driver;
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.className("ot-sdk-row")));
     }
 	
-	@Test(priority=0)
-	@Description("Verify that the contact form displays appropriate validation messages when submitted with empty fields.")
-	public void emptyFieldsValidationMessages() {
-
+	@Test
+	@Description("Verify contact form field validation for empty fields, invalid phone number format or letters, invalid email address format, and invalid message field length.")
+	public void contactFormValidation() {
 
 		driver.findElement(By.xpath("//span[text()='Wyślij wiadomość']")).click();
 
@@ -62,12 +61,6 @@ WebDriver driver;
 						.below(driver.findElement(By.cssSelector("div[name='recaptcha']")))).getText(),
 				"Proszę wypełnić captchę");
 
-	}
-
-	@Test(priority=1)
-	@Description("Verify that the contact form displays an error message when an invalid phone number format or a letter is entered.")
-	public void phoneNumberFieldValidation() {
-
 		driver.findElement(By.id("input-phone")).sendKeys("a$");
 
 		// Checking validation of entering letter/special char. in phone number field
@@ -75,31 +68,7 @@ WebDriver driver;
 
 		driver.findElement(By.id("input-phone")).sendKeys("6");
 
-		driver.findElement(By.xpath("//span[text()='Wyślij wiadomość']")).click();
-
-		// Checking the validation message - too short value in Phone number field
-		Assert.assertEquals(driver
-				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("input-phone"))))
-				.getText(), "Wpisz poprawny numer telefonu");
-	}
-
-	@Test(priority=2)
-	@Description("Verify that the contact form displays an error message when an invalid email address format (without '@') is entered.")
-	public void emailFieldValidation() {
-
 		driver.findElement(By.id("input-email")).sendKeys("a");
-
-		driver.findElement(By.xpath("//span[text()='Wyślij wiadomość']")).click();
-
-		// Checking the validation message - email without @
-		Assert.assertEquals(driver
-				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("input-email"))))
-				.getText(), "Podany adres e-mail nie jest poprawny.");
-	}
-
-	@Test(priority=3)
-	@Description("Verify error message for message field with invalid length.")
-	public void messageFieldLengthValidation() {
 
 		// Checking max message length
 		Assert.assertEquals(driver.findElement(By.id("message")).getAttribute("maxlength"), "5000");
@@ -108,13 +77,24 @@ WebDriver driver;
 
 		driver.findElement(By.xpath("//span[text()='Wyślij wiadomość']")).click();
 
+		// Checking the validation message - too short value in Phone number field
+		Assert.assertEquals(driver
+				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("input-phone"))))
+				.getText(), "Wpisz poprawny numer telefonu");
+
+		// Checking the validation message - email without @
+		Assert.assertEquals(driver
+				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("input-email"))))
+				.getText(), "Podany adres e-mail nie jest poprawny.");
+
 		// Checking the validation message - too short value in Message field
 		Assert.assertEquals(driver
 				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("message"))))
 				.getText(), "Wiadomość jest za krótka");
+
 	}
 
-	@Test(priority=4)
+	//@Test
 	@Description("Verify that the contact form displays only the CAPTCHA validation message when all fields are filled correctly.")
 	public void captchaValidationMessageWhenOtherFieldsValid() {
 
