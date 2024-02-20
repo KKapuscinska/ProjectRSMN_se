@@ -1,46 +1,78 @@
 # LoginTest:
 
 Preconditions:
+1. Navigate to url 'www.rossmann.pl/'
+
+
+TestCase 1 - Log in via a popup login window
+successfulLoginViaPopup()
+
+	1. Hover over Profile tab
+	2. Click to login button
+	3. Login with correct credentials
+	
+	
+TestCase 2 - Log in via a login page
+successfulLoginViaPage()
+
+
+	1. Click to Profile tab
+	2. Login with correct credentials	
+	
+	
+TestCase 3 - Log out
+successfulLogout()
+
+Preconditions:
+- User should be logged in to the Rossmann app
+
+	1. Hover over Profile tab
+	2. Click the logout button	
+	
+
+TestCase 4 - Show Password Functionality
+verifyPasswordVisibilityFunctionality()
+
+    1. Go to login page
+    2. Enter password into the password field 
+    3. Click 'show password' option
+    4. Verify visibility of the password
+	
+	
+	
+# LoginTestFailed:
+
+
+Preconditions:
 1. Navigate to url 'www.rossmann.pl/logowanie'
 
 
-TestCase 1 - Empty Fields
+TestCase 1 - Try to log in with empty fields
 emptyFieldsLoginFailure()
 
     1. Click the login button without entering any credentials
 	2. Verify appearance of error messages
     
     
-TestCase 2 - Too short login
-tooShortLoginFailure()
-
-    1. Enter one letter into the login field
-	2. Click the login button
-	3. Verify appearance of error message
-
-
-TestCase 3 - Too long login
-tooLongLoginFailure()
-
-    1. Enter >100 characters into the login field
-    2. Click the login button
-    3. Verify appearance of error message
-
-
-TestCase 4 - Incorrect Password
+TestCase 2 - try to log in with incorrect Password
 incorrectPasswordLoginFailure()
 
     1. Enter incorrect login or password
     2. Click the login button
     3. Verify appearance of error message
 
+TestCase 3 - Try to log in with too short/long login
+invalidLengthLoginFailure()
 
-TestCase 5 - Show Password Functionality
-verifyPasswordVisibilityFunctionality()
+    1. Enter one char. into the login field
+	2. Click the login button
+	3. Verify appearance of error message
+    4. Enter >100 characters into the login field
+    5. Click the login button
+    6. Verify appearance of error message
 
-    1. Enter password into the password field 
-    2. Click 'show password' option
-    3. Verify visibility of the password
+
+
     
     
 

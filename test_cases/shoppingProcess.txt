@@ -22,7 +22,7 @@ verifyProductDetailsInShoppingCart()
 	
 	
 TestCase 3 - Remove product from shopping cart by decreasing quantity to zero
-removeProductFromShoppingCartByDecreasingQuantityToZero()
+decreaseProductQuantityInShoppingCartToZero()
 	
 	1. Navigate to the shopping cart
 	2. Change the quantity of the product to zero
