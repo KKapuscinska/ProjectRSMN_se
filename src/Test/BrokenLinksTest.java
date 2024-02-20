@@ -25,7 +25,7 @@ public class BrokenLinksTest {
 
 	WebDriver driver;
 	
-	@BeforeTest
+	@BeforeTest(groups = {"smoketests"})
     public void setup() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
@@ -35,7 +35,7 @@ public class BrokenLinksTest {
         driver.get("https://www.rossmann.pl");
     }
 	
-	@Test
+	@Test(groups = {"smoketests"})
 	@Description("Check functionality of main categories menu links.")
 	public void checkMainCategoriesMenuLinks() throws MalformedURLException, IOException {
 
@@ -60,7 +60,7 @@ public class BrokenLinksTest {
 
 	}
 
-	@Test
+	@Test(groups = {"smoketests"})
 	@Description("Check functionality of subcategories menu links.")
 	public void checkSubcategoriesMenuLinks() throws MalformedURLException, IOException {
 
@@ -85,7 +85,7 @@ public class BrokenLinksTest {
 	}
 
 
-	@AfterTest
+	@AfterTest(groups = {"smoketests"})
 	public void tearDown() {
 		if (driver != null) {
 			driver.quit();
