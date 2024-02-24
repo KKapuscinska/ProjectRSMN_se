@@ -11,3 +11,11 @@ It has been developed solely by me, showcasing my skills and expertise in test a
 
 
 [![TestCases](https://img.shields.io/badge/Test%20Cases-04C38E.svg)](https://github.com/KKapuscinska/ProjectRSMN_se/tree/main/test_cases)
+
+## Tools and Libraries
+
+- Eclipse - IDE
+- Java (17.0.8)
+- Maven (3.8.1)
+- Selenium (4.17.0)
+- All used libraries are specified in the `pom.xml` file under the `<dependencies>` section.
