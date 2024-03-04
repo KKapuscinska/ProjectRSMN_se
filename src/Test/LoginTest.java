@@ -84,7 +84,7 @@ WebDriver driver;
 	}
 	
 	
-	@Test(priority = 1, dependsOnMethods={"successfulLoginPopup()"}, groups = {"smoketests"})
+	@Test(priority = 1, dependsOnMethods={"successfulLoginViaPopup()"}, groups = {"smoketests"})
 	@Description("User can successfully log out using the logout button in Profile.")
 	public void successfulLogout() throws InterruptedException {
 		

@@ -3,11 +3,10 @@ package test;
 import jdk.jfr.Description;
 
 import java.time.Duration;
-import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -42,7 +41,7 @@ public class ProductFilterTest {
 	
 	@Test
 	@Description("Verify that selecting the 'Feel Atmosphere' checkbox enables the filter.")
-	public void verifyFeelAtmosphereFilter() {
+	public void verifyFeelAtmosphereFilter() throws InterruptedException {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 		
@@ -50,14 +49,21 @@ public class ProductFilterTest {
 		
 		driver.findElement(By.cssSelector(".filters__btns")).click();
 		
+		Thread.sleep(1500);
+		
+		// Scroll to the top of the page
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollTo(0, 0);");
+		
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".btn-tag.m-1")));
 		
 		Assert.assertEquals(driver.findElement(By.cssSelector(".btn-tag.m-1")).getText(), "CZUJESZ KLIMAT?");
 	}
 
-	
+	@Test(enabled=false)
 	@Description("Verify that the 'promotion' filter displays only products that are on promotion.")
 	public void verifyPromotionsFilter() {
+			
 	}
 	
 	@Description("Verify that the 'New Arrivals' filter displays only newly arrived products.")
