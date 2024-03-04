@@ -1,28 +1,25 @@
 package test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-
 import static org.openqa.selenium.support.locators.RelativeLocator.*;
-
-import java.time.Duration;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import jdk.jfr.Description;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
+
 import org.testng.annotations.Test;
 
 public class LoginTestFailed {
 
 WebDriver driver;
-	
+
 	@BeforeTest
     public void setup() {
         WebDriverManager.chromedriver().setup();
@@ -34,7 +31,27 @@ WebDriver driver;
         driver.get("https://www.rossmann.pl/logowanie");
     }
 	
-	@Test
+	@Test(dataProvider="getData")
+	@Description("User cannot log in.")
+	public void failedLogin(String username, String password, String invalidFeedback) throws InterruptedException {
+
+		driver.get("https://www.rossmann.pl/logowanie");
+		
+		driver.findElement(By.id("login-user")).sendKeys(username);
+
+		driver.findElement(By.id("login-password")).sendKeys(password);
+		
+		driver.findElement(By.xpath("//span[text()='Zaloguj się']")).click();
+
+		Thread.sleep(1500);
+
+		Assert.assertEquals(driver
+				.findElement(with(By.cssSelector(".invalid-feedback")).below(driver.findElement(By.id("login-user"))))
+				.getText(), invalidFeedback);
+
+	}
+
+	@Test(enabled=false)
 	@Description("User cannot log in without filling in login fields.")
 	public void emptyFieldsLoginFailure() throws InterruptedException {
 
@@ -51,8 +68,7 @@ WebDriver driver;
 				.getText(), "Błąd w obecnym haśle.");
 	}
 
-
-	@Test
+	@Test(enabled=false)
 	@Description("User cannot log in with an incorrect password.")
 	public void incorrectPasswordLoginFailure() throws InterruptedException {
 
@@ -72,7 +88,7 @@ WebDriver driver;
 
 	}
 
-	@Test
+	@Test(enabled=false)
 	@Description("User cannot log in with a too short/long login.")
 	public void invalidLengthLoginFailure() throws InterruptedException {
 
@@ -117,5 +133,28 @@ WebDriver driver;
 	        driver.quit();
 	    }
 	}	
+	
+	@DataProvider
+	public Object[][] getData()
+	{
+		Object[][] data= new Object[4][3];
+		data[0][0]= "";
+		data[0][1]= "";
+		data[0][2]= "Proszę wpisać poprawny adres e-mail lub nazwę użytkownika.";
+		
+		data[1][0]= "cytest123";
+		data[1][1]= "randomText";
+		data[1][2]= "Niepoprawne dane logowania.";
+		
+		data[2][0]= "r";
+		data[2][1]= "randomText";
+		data[2][2]= "Nazwa użytkownika powinna składać się z co najmniej 4 znaków.";
+		
+		data[3][0]= "Loremipsumdolorsitamet.consectetueradipiscingelit.Aeneancommodoligulaegetdolor.Aeneanmassa.Cumsociiss";
+		data[3][1]= "randomText";
+		data[3][2]= "Nazwa użytkownika powinna składać się z maksymalnie 100 znaków.";
+		
+		return data;
+	}
 
 }

@@ -3,10 +3,12 @@
 
 <suite name="logintests">
 	
+	<parameter name="" value=""></parameter>
+	
   <test verbose="1" name="logintests">
     <classes>
-      <class name="test.LoginTest"/>
       <class name="test.LoginTestFailed"/>
+      <class name="test.LoginTest"/>
     </classes>
   </test> 
 </suite> 
