@@ -20,7 +20,7 @@ contactFormValidation()
 
 
 TestCase 2 - Filling out the Contact Form
-captchaValidationMessageWhenOtherFieldsValid()
+submitContactFormAndValidateCaptchaMessage()
 
     1. Enter correct values into all fields of the contact form
     2. Submit the form

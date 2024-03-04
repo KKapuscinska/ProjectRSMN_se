@@ -96,7 +96,7 @@ WebDriver driver;
 
 	//@Test
 	@Description("Verify that the contact form displays only the CAPTCHA validation message when all fields are filled correctly.")
-	public void captchaValidationMessageWhenOtherFieldsValid() {
+	public void submitContactFormAndValidateCaptchaMessage() {
 
 		driver.findElement(By.id("input-name-1")).sendKeys("Krzysztof");
 
@@ -111,7 +111,6 @@ WebDriver driver;
 		driver.findElement(By.xpath("//span[text()='Wyślij wiadomość']")).click();
 
 		// Checking if the correct completion of the form only activates the captcha validation message
-		
 		Assert.assertEquals(driver.findElements(By.cssSelector(".invalid-feedback")).size(), 1);
 
 		
