@@ -41,3 +41,14 @@ verifyTotalPriceInShoppingCart()
 	
 	1. Increase or decrease the quantity of products in the shopping cart
 	2. Verify that the total price in the shopping cart reflects the changes accurately
+
+
+TestCase 6 -  Verify error popup after adding maximum quantity of product to shopping cart
+addMaxQuantityToShoppingCart()
+	
+	1. Click on the Cart icon in random product
+	2. Repeat step 2 until a pop-up message appears indicating that the maximum quantity of this product in the cart has been reached
+	
+	
+	
+	
