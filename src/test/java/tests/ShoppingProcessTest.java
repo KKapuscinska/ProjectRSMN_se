@@ -11,6 +11,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -21,15 +22,16 @@ import java.util.Random;
 
 public class ShoppingProcessTest extends BaseTest {
 
+	HomePage homePage;
+	
 	@BeforeTest(groups = { "smoketests" })
 	public void setup() throws IOException {
-		HomePage homePage = launchApplication();
+		homePage = PageFactory.initElements(driver, HomePage.class);
 		homePage.acceptCookiesInCookieBar();
 	}
 
 	@BeforeMethod(groups = { "smoketests" })
 	public void beforeTest() {
-		HomePage homePage = new HomePage(driver);
 		homePage.goToProductCataloguePage();
 	}
 

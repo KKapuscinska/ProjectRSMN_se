@@ -2,11 +2,14 @@ package test.java.tests;
 
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
+import main.java.pages.LoginPage;
 import main.java.pages.ProductCatalogue;
 import test.java.basetest.BaseTest;
 
 import java.io.IOException;
 import java.util.List;
+
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
@@ -14,22 +17,24 @@ import org.testng.annotations.Test;
 
 public class ProductFilterTest extends BaseTest {
 
+	HomePage homePage;
+	ProductCatalogue productCatalogue;
+	
 	@BeforeTest
 	public void setup() throws IOException {
-		HomePage homePage = new HomePage(driver);
+		homePage = PageFactory.initElements(driver, HomePage.class);
+		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);
 		homePage.acceptCookiesInCookieBar();
 	}
 
 	@BeforeMethod
 	public void beforeMethod() {
-		HomePage homePage = new HomePage(driver);
 		homePage.goToProductCataloguePage();
 	}
 
 	@Test(enabled = true)
 	@Description("Verify that selecting the 'Feel Atmosphere' checkbox enables the filter.")
-	public void verifyFeelAtmosphereFilter() throws InterruptedException {
-		ProductCatalogue productCatalogue = new ProductCatalogue(driver);
+	public void verifyFeelAtmosphereFilter() {
 
 		productCatalogue.selectFilter("Czujesz klimat?");
 		Assert.assertTrue(productCatalogue.isFilterSelected("Czujesz klimat?"));
@@ -39,8 +44,7 @@ public class ProductFilterTest extends BaseTest {
 
 	@Test(enabled = true)
 	@Description("Verify that the 'promotion' filter displays only products that are on promotion.")
-	public void verifyPromotionsFilter() throws InterruptedException {
-		ProductCatalogue productCatalogue = new ProductCatalogue(driver);
+	public void verifyPromotionsFilter() {
 
 		productCatalogue.selectFilter("Promocja");
 		Assert.assertTrue(productCatalogue.isFilterSelected("Promocja"));
@@ -63,7 +67,6 @@ public class ProductFilterTest extends BaseTest {
 	@Test
 	@Description("Verify that the 'Mega' filter displays only products with the 'MEGA!' badge.")
 	public void verifyMegaFilter() throws InterruptedException {
-		ProductCatalogue productCatalogue = new ProductCatalogue(driver);
 
 		productCatalogue.selectFilter("Mega");
 		Assert.assertTrue(productCatalogue.isFilterSelected("Mega"));
@@ -88,7 +91,6 @@ public class ProductFilterTest extends BaseTest {
 	@Test
 	@Description("Verify that the 'Online Only' filter displays only products with the 'Online Only' badge.")
 	public void verifyOnlineOnlyFilter() throws InterruptedException {
-		ProductCatalogue productCatalogue = new ProductCatalogue(driver);
 
 		productCatalogue.selectFilter("TYLKO ONLINE");
 		Assert.assertTrue(productCatalogue.isFilterSelected("TYLKO ONLINE"));
@@ -112,7 +114,6 @@ public class ProductFilterTest extends BaseTest {
 	@Test
 	@Description("Verify that changing number of products per page option works correctly and check default options.")
 	public void verifyChangeNumberOfProductsPerPageOption() throws InterruptedException {
-		ProductCatalogue productCatalogue = new ProductCatalogue(driver);
 
 		// Checking default number of products per page == 24
 		Assert.assertTrue(productCatalogue.selectedPerPageOption.getText().contains("24"));

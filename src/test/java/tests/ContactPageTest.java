@@ -1,6 +1,7 @@
 package test.java.tests;
 
 
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import static org.openqa.selenium.support.locators.RelativeLocator.*;
 
@@ -15,10 +16,13 @@ import org.testng.annotations.Test;
 
 public class ContactPageTest extends BaseTest{
 
-
+	ContactPage contactPage;
+	HomePage homePage;
+	
 	@BeforeTest
     public void setup() throws IOException {
-		HomePage homePage = new HomePage(driver);
+		contactPage = PageFactory.initElements(driver, ContactPage.class);
+		homePage = PageFactory.initElements(driver, HomePage.class);
 		homePage.goToContactPage();
 		homePage.acceptCookiesInCookieBar();
     }
@@ -26,8 +30,7 @@ public class ContactPageTest extends BaseTest{
 	@Test
 	@Description("Verify contact form field validation for empty fields, invalid phone number format or letters, invalid email address format, and invalid message field length.")
 	public void contactFormValidation() {
-		ContactPage contactPage = new ContactPage(driver);
-		
+
 		contactPage.sendContactForm();
 
 		// Checking the validation message - blank form
@@ -83,7 +86,6 @@ public class ContactPageTest extends BaseTest{
 	@Test
 	@Description("Verify that the contact form displays only the CAPTCHA validation message when all fields are filled correctly.")
 	public void submitContactForm() {
-		ContactPage contactPage = new ContactPage(driver);
 		
 		contactPage.fillName("Krzysztof");
 		contactPage.fillLastName("Jarzyna");

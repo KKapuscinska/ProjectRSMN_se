@@ -1,10 +1,13 @@
 package test.java.tests;
 
+
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
 import java.io.IOException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
@@ -13,12 +16,18 @@ import test.java.basetest.BaseTest;
 
 public class LoginTest extends BaseTest {
 
+	HomePage homePage;
+	LoginPage loginPage;
+	
+	@BeforeTest
+    public void setup() throws IOException {
+		homePage = PageFactory.initElements(driver, HomePage.class);
+		loginPage = PageFactory.initElements(driver, LoginPage.class);
+    }
+	
 	@Test
 	@Description("User can successfully log in and log out via a popup login window.")
 	public void successfulLoginViaPopup() throws InterruptedException, IOException {
-
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
 
 		homePage.hoverOverUserAccountLinkAndClickLogin();
 		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
@@ -35,9 +44,6 @@ public class LoginTest extends BaseTest {
 	@Test(groups = { "smoketests" })
 	@Description("User can successfully log in and log out via the login page.")
 	public void successfulLoginViaPage() throws InterruptedException {
-
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
 
 		homePage.clickAccountButtonIcon();
 
@@ -57,9 +63,6 @@ public class LoginTest extends BaseTest {
 	@Description("Verify password visibility functionality.")
 	public void verifyPasswordVisibilityFunctionality() throws InterruptedException {
 
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
-
 		homePage.clickAccountButtonIcon();
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"));
@@ -75,8 +78,7 @@ public class LoginTest extends BaseTest {
 	@Test(enabled = true)
 	@Description("User cannot log in without filling in login fields.")
 	public void failureLoginEmptyFields() throws InterruptedException {
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
+
 		homePage.goToLoginPage();
 		loginPage.logInByIncorrectCredentials("", "");
 
@@ -95,8 +97,6 @@ public class LoginTest extends BaseTest {
 	@Description("User cannot log in with an incorrect password.")
 	public void failureLoginIncorrectPassword() throws InterruptedException {
 
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
 		homePage.goToLoginPage();
 
 		loginPage.logInByIncorrectCredentials("cytest123", "randomText");
@@ -113,8 +113,6 @@ public class LoginTest extends BaseTest {
 	@Description("User cannot log in with a too short/long login.")
 	public void failureLoginInvalidLength() throws InterruptedException {
 
-		LoginPage loginPage = new LoginPage(driver);
-		HomePage homePage = new HomePage(driver);
 		homePage.goToLoginPage();
 		loginPage.logInByIncorrectCredentials("r", "randomText");
 
