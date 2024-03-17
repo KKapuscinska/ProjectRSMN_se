@@ -1,0 +1,48 @@
+# ProductFilterTests:
+
+Preconditions:
+1. Navigate to url 'www.rossmann.pl/szukaj'
+
+
+TestCase 1 - Select the 'Feel Atmosphere' filter
+verifyFeelAtmosphereFilter()
+	
+	1. Select the 'Feel Atmosphere' filter
+	2. Verify that the filter is selected
+	
+	
+TestCase 2 - Select the 'Promotions' filter
+verifyPromotionsFilter()
+	
+	1. Select the 'Promotions' filter
+	2. Verify that the filter is selected
+	3. Check if every product on the page has information about the lowest price (omnibus info)
+	
+	
+TestCase 3 - Select the 'Mega' filter
+verifyMegaFilter()
+	
+	1. Select the 'Mega' filter
+	2. Verify that the filter is selected
+	3. Check if every product on the page has 'Mega' badge
+	
+	
+TestCase 4 -  Select the 'Online only' filter
+verifyOnlineOnlyFilter() 
+	
+	1. Select the 'Only online' filter
+	2. Verify that the filter is selected
+	3. Check if every product on the page has 'Only online' badge
+
+
+TestCase 5 -  Verify change number of product per page options are working
+verifyChangeNumberOfProductsPerPageOption()
+	
+	1. Check the default number of products per page (24)
+	2. Change the number of products per page to 96, 48 and 24
+	3. Verify if the options are working correctly
+
+
+
+	
+	

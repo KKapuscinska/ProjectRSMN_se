@@ -8,9 +8,9 @@
    			</run>
    		</groups>
 	 <classes>
-        <class name="test.BrokenLinksTest" />
-        <class name="test.LoginTest" />
-        <class name="test.ShoppingProcessTest" />
+        <class name="test.java.tests.BrokenLinksTest" />
+        <class name="test.java.tests.LoginTest" />
+        <class name="test.java.tests.ShoppingProcessTest" />
     </classes>
 </test>
  </suite>

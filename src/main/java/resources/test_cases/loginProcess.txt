@@ -15,22 +15,11 @@ successfulLoginViaPopup()
 TestCase 2 - Log in via a login page
 successfulLoginViaPage()
 
-
 	1. Click to Profile tab
 	2. Login with correct credentials	
 	
-	
-TestCase 3 - Log out
-successfulLogout()
 
-Preconditions:
-- User should be logged in to the Rossmann app
-
-	1. Hover over Profile tab
-	2. Click the logout button	
-	
-
-TestCase 4 - Show Password Functionality
+TestCase 3 - Show Password Functionality
 verifyPasswordVisibilityFunctionality()
 
     1. Go to login page
@@ -48,21 +37,21 @@ Preconditions:
 
 
 TestCase 1 - Try to log in with empty fields
-emptyFieldsLoginFailure()
+failureLoginEmptyFields()
 
     1. Click the login button without entering any credentials
 	2. Verify appearance of error messages
     
     
 TestCase 2 - try to log in with incorrect Password
-incorrectPasswordLoginFailure()
+failureLoginIncorrectPassword()
 
     1. Enter incorrect login or password
     2. Click the login button
     3. Verify appearance of error message
 
 TestCase 3 - Try to log in with too short/long login
-invalidLengthLoginFailure()
+failureLoginInvalidLength()
 
     1. Enter one char. into the login field
 	2. Click the login button

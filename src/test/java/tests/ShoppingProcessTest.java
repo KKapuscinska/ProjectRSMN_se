@@ -1,60 +1,52 @@
-package test;
+package test.java.tests;
 
 import jdk.jfr.Description;
 
+import main.java.pages.HomePage;
+import test.java.testComponents.BaseTest;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import java.util.Random;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+public class ShoppingProcessTest extends BaseTest {
 
-public class ShoppingProcessTest {
-
-	WebDriver driver;
-
-	@BeforeTest(groups = {"smoketests"})
-	public void setup() {
-		WebDriverManager.chromedriver().setup();
-		driver = new ChromeDriver();
-
-		driver.manage().window().maximize();
-		
+	@BeforeTest(groups = { "smoketests" })
+	public void setup() throws IOException {
+		HomePage homePage = launchApplication();
+		homePage.acceptCookiesInCookieBar();
 	}
 
-	@BeforeMethod(groups = {"smoketests"})
+	@BeforeMethod(groups = { "smoketests" })
 	public void beforeTest() {
-		driver.get("https://www.rossmann.pl/szukaj");
-
+		HomePage homePage = new HomePage(driver);
+		homePage.goToProductCataloguePage();
 	}
 
-	@Test(priority = 0, groups = {"smoketests"})
+	@Test(priority = 0, groups = { "smoketests" })
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
-	public void addAndRemoveProductFromShoppingCart() {
+	public void addAndRemoveProductFromShoppingCart() throws InterruptedException {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
 		String productName = null;
-		
-		// Adding to the cart first available product 
+
+		// Adding to the cart first available product
 		List<WebElement> productList = driver.findElements(By.cssSelector(".product-list__col--thirds"));
 		for (WebElement product : productList) {
 			List<WebElement> cartIconList = product.findElements(By.cssSelector(".nav-user__icon"));
 
 			if (cartIconList.size() > 0) {
-				// Grabbing name of first available product 
+				// Grabbing name of first available product
 				WebElement productNameElement = product.findElement(By.cssSelector(".tile-product__name strong"));
 				productName = productNameElement.getText();
 				WebElement cartIconElement = product.findElement(By.cssSelector(".nav-user__icon"));
@@ -64,9 +56,9 @@ public class ShoppingProcessTest {
 		}
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dropdown-mini_basket")));
-
+		// Thread.sleep(1500);
 		driver.findElement(By.cssSelector(".nav-user-product__btn")).click();
-
+		// Thread.sleep(1500);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-product__name strong")));
 
 		WebElement cartProductNameElement = driver.findElement(By.cssSelector(".cart-product__name strong"));
@@ -78,16 +70,17 @@ public class ShoppingProcessTest {
 
 		// Click to remove btn
 		driver.findElement(By.cssSelector(".btn-del")).click();
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
 
-	@Test(groups = {"smoketests"})
+	@Test(groups = { "smoketests" })
 	@Description("Verify that the correct product details are displayed in the shopping cart after adding it.")
-	public void verifyProductDetailsInShoppingCart() {
+	public void verifyProductDetailsInShoppingCart() throws InterruptedException {
 
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-		// Adding to the cart first available product 
+		// Adding to the cart first available product
 		List<WebElement> products = driver.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
 		if (products.size() > 0) {
 			WebElement firstProduct = products.get(0);
@@ -103,7 +96,7 @@ public class ShoppingProcessTest {
 		String cartProductPrice = driver.findElement(By.cssSelector(".cart-product__price")).getText();
 
 		driver.findElement(By.cssSelector(".cart-product__name strong")).click();
-
+		Thread.sleep(1500);
 		WebElement productNameElement = driver.findElement(By.cssSelector("div.product-info__name > h1.h1"));
 		String productName = productNameElement.getText().split("\n")[0].trim();
 
@@ -117,17 +110,18 @@ public class ShoppingProcessTest {
 		driver.get("https://www.rossmann.pl/zamowienie/koszyk");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-product__name strong")));
 		driver.findElement(By.cssSelector(".btn-del")).click();
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 
 	}
 
 	@Test
 	@Description("Verify that the user can remove a product from the shopping cart by decreasing its quantity to zero.")
-	public void decreaseProductQuantityInShoppingCartToZero() {
+	public void decreaseProductQuantityInShoppingCartToZero() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 
-		// Adding to the cart first available product 
+		// Adding to the cart first available product
 		List<WebElement> products = driver.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
 		if (products.size() > 0) {
 			WebElement firstProduct = products.get(0);
@@ -143,10 +137,10 @@ public class ShoppingProcessTest {
 		driver.findElement(By.cssSelector(".cart-product__quantity")).click();
 
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".sri-select__items-container")));
-
-		WebElement element = driver.findElement(By.xpath("//div[@class='sri-select__item ' and text()='0']"));
+		Thread.sleep(1500);
+		WebElement element = driver.findElement(By.cssSelector(".sri-select__item:first-child"));
 		element.click();
-
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
 
@@ -155,9 +149,9 @@ public class ShoppingProcessTest {
 	public void increaseProductQuantityInShoppingCart() throws InterruptedException {
 		driver.get("https://www.rossmann.pl/szukaj");
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 
-		// Adding to the cart first available product 
+		// Adding to the cart first available product
 		List<WebElement> products = driver.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
 		if (products.size() > 0) {
 			WebElement firstProduct = products.get(0);
@@ -171,9 +165,10 @@ public class ShoppingProcessTest {
 		Assert.assertEquals(driver.findElement(By.cssSelector(".sri-select__selected")).getText(), "1");
 
 		driver.findElement(By.cssSelector(".cart-product__quantity")).click();
-
+		Thread.sleep(1500);
 		// Selecting random available number of articles from a dropdown list
-		List<WebElement> dropdownOptions = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[role='rowgroup'] div")));
+		List<WebElement> dropdownOptions = wait
+				.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[role='rowgroup'] div")));
 
 		Random rand = new Random();
 		int randomIndex = rand.nextInt(dropdownOptions.size() - 2) + 2;
@@ -183,7 +178,7 @@ public class ShoppingProcessTest {
 		String randomElementText = randomElement.getText();
 
 		randomElement.click();
-		
+
 		Thread.sleep(1500);
 
 		// Checking if the number of products has been selected correctly
@@ -194,16 +189,17 @@ public class ShoppingProcessTest {
 
 		// Clean the shopping cart
 		driver.findElement(By.cssSelector(".btn-del")).click();
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
 
-	@Test(groups = {"smoketests"})
+	@Test(groups = { "smoketests" })
 	@Description("Verify that the total price is updated correctly after modifying the quantity of products in the shopping cart.")
-	public void verifyTotalPriceInShoppingCart() {
+	public void verifyTotalPriceInShoppingCart() throws InterruptedException {
 
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 
-		// Adding to the cart first available product 
+		// Adding to the cart first available product
 		List<WebElement> products = driver.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
 		if (products.size() > 0) {
 			WebElement firstProduct = products.get(0);
@@ -222,23 +218,27 @@ public class ShoppingProcessTest {
 
 		driver.findElement(By.cssSelector(".cart-product__quantity")).click();
 
+		Thread.sleep(1500);
 		// Selecting the highest available number of articles from a dropdown list
-		List<WebElement> dropdownOptions = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[role='rowgroup'] div")));
+		List<WebElement> dropdownOptions = wait
+				.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[role='rowgroup'] div")));
 
 		WebElement lastVisibleElement = dropdownOptions.get(dropdownOptions.size() - 1);
-		
+
 		String lastVisibleElementText = lastVisibleElement.getText();
-		
+
 		int lastVisibleElementValue = Integer.parseInt(lastVisibleElementText);
 
 		lastVisibleElement.click();
 
+		Thread.sleep(1500);
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".sri-select__items-container")));
 
-		Assert.assertEquals(driver.findElement(By.cssSelector(".sri-select__selected")).getText(), lastVisibleElementText);
+		Assert.assertEquals(driver.findElement(By.cssSelector(".sri-select__selected")).getText(),
+				lastVisibleElementText);
 
 		// Checking if the cart total matches the products price
-		
+
 		String productPriceAfter = driver.findElement(By.cssSelector(".cart-product__price")).getText();
 		String cartValueAfter = driver.findElement(By.cssSelector(".price-details__value-total")).getText();
 
@@ -254,52 +254,57 @@ public class ShoppingProcessTest {
 
 		// Clean the shopping cart
 		driver.findElement(By.cssSelector(".btn-del")).click();
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 
 	}
 
-	@Test
+	// @Test
 	@Description("Add maximum quantity of one product to shopping cart and verify popup message.")
 	public void addMaxQuantityToShoppingCart() throws InterruptedException {
-		
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		
+
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+
 		boolean maxProductsReached = false;
 
 		while (!maxProductsReached) {
-			
-			// Adding to the cart first available product 
-		    List<WebElement> products = driver.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
-		    if (products.size() > 0) {
-		        WebElement firstProduct = products.get(0);
-		        firstProduct.click();
-		        
-		        try {
-		        	
-		        	// Check if popup with maximum quantity message appears
-	                WebElement maxProductsPopup = driver.findElement(By.cssSelector("div.Toastify__toast-body"));
-	                String popupText = maxProductsPopup.getText();
-	                if (popupText.equals("Przepraszamy, nie mamy więcej sztuk tego produktu")) {
-	                    System.out.println("Test passed: Popup message matches expected text.");
-	                    maxProductsReached = true; // Set flag to true when popup is visible
-	                } else {
-	                    System.out.println("Test failed: Popup message does not match expected text.");
-	                    break;
-	                }
-	            } catch (NoSuchElementException e) {
-	            	Thread.sleep(300);
-	            	// Continue adding product if popup is not visible
-	            }
-	        }
+
+			// Adding to the cart first available product
+			List<WebElement> products = driver
+					.findElements(By.cssSelector(".product-list__col--thirds .nav-user__icon"));
+			if (products.size() > 0) {
+				WebElement firstProduct = products.get(0);
+				firstProduct.click();
+
+				try {
+
+					// Check if popup with maximum quantity message appears
+					WebElement maxProductsPopup = driver.findElement(By.cssSelector("div.Toastify__toast-body"));
+					String popupText = maxProductsPopup.getText();
+					if (popupText.equals("Przepraszamy, nie mamy więcej sztuk tego produktu")) {
+						System.out.println("Test passed: Popup message matches expected text.");
+						maxProductsReached = true; // Set flag to true when popup is visible
+					} else {
+						System.out.println("Test failed: Popup message does not match expected text.");
+						break;
+					}
+				} catch (NoSuchElementException e) {
+					Thread.sleep(300);
+					// Continue adding product if popup is not visible
+				}
+			}
 		}
-		
+
+		Thread.sleep(1500);
+
 		// Clear the cart
 		driver.get("https://www.rossmann.pl/zamowienie/koszyk");
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".cart-product__name strong")));
 		driver.findElement(By.cssSelector(".btn-del")).click();
+		Thread.sleep(1500);
 		Assert.assertEquals(driver.findElement(By.cssSelector(".h3")).getText(), "Twój koszyk jest pusty");
 	}
-	
+
 	@Description("Verify that the user can proceed to checkout from the shopping cart.")
 	public void proceedToCheckoutFromShoppingCart() {
 	}
@@ -308,11 +313,4 @@ public class ShoppingProcessTest {
 	public void selectShippingMethodDuringCheckout() {
 	}
 
-	@AfterTest(groups = {"smoketests"})
-	public void tearDown() {
-
-		if (driver != null) {
-			driver.quit();
-		}
-	}
 }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="alltests">
+	
+	
+	<test name="BrokenLinks">
+        <classes>
+            <class name="test.java.tests.BrokenLinksTest"/>
+        </classes>
+    </test>
+
+    <test name="ContactPageTest">
+        <classes>
+            <class name="test.java.tests.ContactPageTest"/>
+        </classes>
+    </test>
+
+    <test name="LoginTest">
+        <classes>
+            <class name="test.java.tests.LoginTest"/>
+        </classes>
+    </test>
+    
+    <test name="ProductFilterTest">
+        <classes>
+            <class name="test.java.tests.ProductFilterTest"/>
+        </classes>
+    </test>
+
+    <test name="ShoppingProcessTest">
+        <classes>
+            <class name="test.java.tests.ShoppingProcessTest"/>
+        </classes>
+    </test>
+
+    
+ 
+</suite> 

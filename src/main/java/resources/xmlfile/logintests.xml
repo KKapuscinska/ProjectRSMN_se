@@ -7,8 +7,9 @@
 	
   <test verbose="1" name="logintests">
     <classes>
-      <class name="test.LoginTestFailed"/>
-      <class name="test.LoginTest"/>
+      
+      <class name="test.java.tests.LoginTest"/>
+      
     </classes>
   </test> 
 </suite> 
