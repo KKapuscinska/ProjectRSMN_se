@@ -8,7 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.testng.asserts.SoftAssert;
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
-import test.java.testComponents.BaseTest;
+import test.java.basetest.BaseTest;
+
 import org.testng.annotations.Test;
 
 

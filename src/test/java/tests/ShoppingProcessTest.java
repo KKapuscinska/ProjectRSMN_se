@@ -3,7 +3,8 @@ package test.java.tests;
 import jdk.jfr.Description;
 
 import main.java.pages.HomePage;
-import test.java.testComponents.BaseTest;
+import test.java.basetest.BaseTest;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;

@@ -8,7 +8,8 @@ import java.io.IOException;
 import jdk.jfr.Description;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
-import test.java.testComponents.BaseTest;
+import test.java.basetest.BaseTest;
+
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 

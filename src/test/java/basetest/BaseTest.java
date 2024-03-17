@@ -1,4 +1,4 @@
-package test.java.testComponents;
+package test.java.basetest;
 
 import java.io.FileInputStream;
 import java.io.IOException;

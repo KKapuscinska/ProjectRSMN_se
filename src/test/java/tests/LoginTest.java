@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
-import test.java.testComponents.BaseTest;
+import test.java.basetest.BaseTest;
 
 public class LoginTest extends BaseTest {
 
