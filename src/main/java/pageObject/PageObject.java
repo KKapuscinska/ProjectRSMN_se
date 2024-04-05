@@ -28,6 +28,12 @@ public class PageObject {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(findBy));
 	}
 	
+	public WebElement waitForElementToAppearWebElement(By findBy)
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		return wait.until(ExpectedConditions.visibilityOfElementLocated(findBy));
+	}
+	
 	public void waitForElementToDisappear(By findBy)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));

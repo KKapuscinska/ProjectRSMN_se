@@ -2,8 +2,10 @@ package main.java.pages;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -23,48 +25,211 @@ public class ProductCatalogue extends PageObject{
 		PageFactory.initElements(driver, this);
 	}
 
+	//WebElements declarations
+	
+	//Product
 	@FindBy(css=".product-list__col--thirds")
 	public
 	List<WebElement> productList;
 	
-	
-	//Filters sections
-	@FindBy(css=".filter__tags div")
-	List<WebElement> filters;
-	
-	@FindBy(css = ".btn-tag.m-1")
+	@FindBy(xpath="//div[starts-with(@data-testid, 'product-tile')]")
 	public
-    WebElement filterTag;
+	List<WebElement> productListNew;
 	
-	@FindBy(css = ".filters__btns")
-    WebElement showResultsButtonInFiltersSections;
+	@FindBy(css=".tile-product__name")
+	public
+	List<WebElement> productNameList;
 	
-	//Sorting, change number products per page
-	@FindBy(css = "div[name='select-container1'] .sri-select__item")
-    List<WebElement> perPageOptions;
-	
-	@FindBy(css = "div[name='select-container1']")
-    WebElement perPageDropdown;
-    
-    @FindBy(css = "div[name='select-container1'] .sri-select__selected")
-    public
-    WebElement selectedPerPageOption;
-		
-	
-	By filtersBy = By.cssSelector(".filter__tags div");
-	By filterTagBy = By.cssSelector(".btn-tag.m-1");
-	By checkboxInputBy = By.cssSelector("input[type='checkbox']");
-	By checkboxSpanBy = By.cssSelector("span[class='checkbox']");
 	By theLowestPriceInfoBy = By.cssSelector(".tile-product__lowest-price");
 	By productTitleInSearchPageBy = By.cssSelector(".tile-product__name strong");
-	By productSortingOptionsContainerBy = By.cssSelector(".ReactVirtualized__Grid__innerScrollContainer");
-
-
 	
 	
+	//Recommendations filters
+	@FindBy(css = "button[data-testid='recommended-select-open-btn']")
+	public
+    WebElement recommendedProductsSelect;
+	
+	@FindBy(css = "button[data-testid='recommended-filter-dropdown-select-submit-btn']")
+	public
+    WebElement submitRecommendedBtn;
+	
+	By recommendedDropdownBy = By.cssSelector("div[data-testid='recommended-filter-dropdown-select-content']");
+	
+	//FeelAtmosphereFilter
+	@FindBy(css = "input[data-testid='brands-select-checkbox-feelAtmosphere'] + span.checkbox")
+	public
+    WebElement feelAtmosphereFilterCheckbox;
+	
+	@FindBy(css = "button[data-testid='filters-chip-feelAtmosphere']")
+	public
+    WebElement feelAtmosphereFilterChip;
+	
+	@FindBy(css = "span[data-testid='filter-chip-close-feelAtmosphere']")
+	public
+    WebElement closeButtonOnFeelAtmosphereFilterLabel;
+	
+	By closeButtonOnFeelAtmosphereFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-feelAtmosphere']");
+	By feelAtmosphereChipBy = By.cssSelector("button[data-testid='filters-chip-feelAtmosphere']");
+	By feelAtmosphereLabelBy = By.xpath("//a[@aria-label='Czujesz Klimat']");
+	
+
+	//Promotions filters
+	@FindBy(css = "button[data-testid='promotions-select-open-btn']")
+	public
+    WebElement promotionsProductsSelect;
+	
+	@FindBy(css = "button[data-testid='promotions-filter-dropdown-select-submit-btn']")
+	public
+    WebElement submitPromotionsBtn;
+	
+	By promotionsDropdownBy = By.cssSelector("div[data-testid='promotions-filter-dropdown-select-content']");
+	
+	//MegaFilter
+	@FindBy(css = "input[data-testid='brands-select-checkbox-mega'] + span.checkbox")
+	public
+    WebElement megaFilterCheckbox;
+	
+	@FindBy(css = "button[data-testid='filters-chip-mega']")
+	public
+    WebElement megaFilterChip;
+	
+	@FindBy(css = "span[data-testid='filter-chip-close-mega']")
+	public
+    WebElement closeButtonOnMegaFilterLabel;
+	
+	By closeButtonOnMegaFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-mega']");
+	By megaChipBy = By.cssSelector("button[data-testid='filters-chip-mega']");
 	
 	public String badgeSelectorMega = ".tile-product__badge.mega";
-	public String badgeSelectorOnlyOnline = ".tile-product__badge.period";
+	
+	//PromotionFilter
+	@FindBy(css = "input[data-testid='brands-select-checkbox-promotion'] + span.checkbox")
+	public
+    WebElement promotionFilterCheckbox;
+	
+	@FindBy(css = "button[data-testid='filters-chip-promotion']")
+	public
+    WebElement promotionFilterChip;
+	
+	@FindBy(css = "span[data-testid='filter-chip-close-promotion']")
+	public
+    WebElement closeButtonOnPromotionFilterLabel;
+	
+	By closeButtonOnPromotionFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-promotion']");
+	By promotionChipBy = By.cssSelector("button[data-testid='filters-chip-promotion']");
+	
+	
+	//Methods related to filtering
+	
+	//Recommendations filters methods
+	public void openRecommendedSelect() {
+		recommendedProductsSelect.click();
+		waitForElementToAppear(recommendedDropdownBy);
+	}
+	
+	public void submitRecommendedFilters() {
+		submitRecommendedBtn.click();
+		waitForElementToDisappear(recommendedDropdownBy);
+	}
+	
+	//FeelAtmosphereFilter
+	public void selectFeelAtmosphereFilter() {
+		openRecommendedSelect();
+		feelAtmosphereFilterCheckbox.click();
+		submitRecommendedFilters();	
+	}
+	
+	public String getFeelAtmosphereFilterChipText() {
+		return feelAtmosphereFilterChip.getText();
+	}
+	
+	public void clickCloseButtonOnFeelAtmosphereFilterLabel() throws InterruptedException {
+		Thread.sleep(1000);
+		scrollToTopOfPage();
+		waitForElementToBeClicable(closeButtonOnFeelAtmosphereFilterLabelBy);
+		closeButtonOnFeelAtmosphereFilterLabel.click();
+	}
+	
+	public boolean isFeelAtmosphereChipVisibleOnProductCatalogue() {
+	    List<WebElement> elements = driver.findElements(feelAtmosphereChipBy);
+	    return !elements.isEmpty();
+	}
+	
+	public boolean isFeelAtmosphereLabelVisibleOnProductPage() {
+        try {
+            WebElement feelAtmosphereLabel = waitForElementToAppearWebElement(feelAtmosphereLabelBy);
+            return feelAtmosphereLabel.isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+	
+	//Promotions filters methods
+	public void openPromotionsSelect() {
+		promotionsProductsSelect.click();
+		waitForElementToAppear(promotionsDropdownBy);
+	}
+	
+	public void submitPromotionsFilters() {
+		submitPromotionsBtn.click();
+		waitForElementToDisappear(promotionsDropdownBy);
+	}
+	
+	//MegaFilter
+	public void selectMegaFilter() {
+		openPromotionsSelect();
+		megaFilterCheckbox.click();
+		submitPromotionsFilters();	
+	}
+	
+	public String getMegaFilterChipText() {
+		return megaFilterChip.getText();
+	}
+	
+	public void clickCloseButtonOnMegaFilterLabel() throws InterruptedException {
+		Thread.sleep(1000);
+		scrollToTopOfPage();
+		waitForElementToBeClicable(closeButtonOnMegaFilterLabelBy);
+		closeButtonOnMegaFilterLabel.click();
+	}
+	
+	public boolean isMegaChipVisibleOnProductCatalogue() {
+	    List<WebElement> elements = driver.findElements(megaChipBy);
+	    return !elements.isEmpty();
+	}
+	
+	//PromotionsFilter
+	public void selectPromotionsFilter() {
+		openPromotionsSelect();
+		promotionFilterCheckbox.click();
+		submitPromotionsFilters();	
+	}
+	
+	public String getPromotionsFilterChipText() {
+		return promotionFilterChip.getText();
+	}
+	
+	public void clickCloseButtonOnPromotionFilterLabel() throws InterruptedException {
+		Thread.sleep(1000);
+		scrollToTopOfPage();
+		waitForElementToBeClicable(closeButtonOnPromotionFilterLabelBy);
+		closeButtonOnPromotionFilterLabel.click();
+	}
+	
+	public boolean isPromotionChipVisibleOnProductCatalogue() {
+	    List<WebElement> elements = driver.findElements(promotionChipBy);
+	    return !elements.isEmpty();
+	}
+
+	//Methods related to products
+
+	public void clickToRandomProductOnPage() {
+		
+		Random random = new Random();
+        int randomIndex = random.nextInt(productNameList.size());
+        WebElement randomProduct = productNameList.get(randomIndex);
+        randomProduct.click();
+	}
 	
 	
 	public List<String> getProductsMissingTheLowestPriceInformation() {
@@ -82,7 +247,6 @@ public class ProductCatalogue extends PageObject{
         return productsWithoutTheLowestPriceInfo;
     }
 	
-	
 	public List<String> getProductsMissingBadge(String badgeSelector) {
         List<String> productsWithoutBadge = new ArrayList<>();
 
@@ -93,63 +257,6 @@ public class ProductCatalogue extends PageObject{
         }
 
         return productsWithoutBadge;
-    }
-	
-	//Filter
-	public List<WebElement> getFilterList()
-	{
-		waitForElementToAppear(filtersBy);
-		return filters;
-	}
-	
-	public WebElement getFilterByName(String filterName)
-	{
-		WebElement filter = getFilterList().stream().filter(filtr -> 
-		filtr.findElement(checkboxInputBy)
-		.getAttribute("name")
-		.equals(filterName))
-		.findFirst()
-		.orElse(null);
-		
-		return filter;
-	}
-	
-	
-	public void selectFilter(String filterName)
-	{
-		WebElement filter = getFilterByName(filterName);
-		filter.findElement(checkboxSpanBy).click();
-	}
-	
-	public boolean isFilterSelected(String filterName) {
-	    WebElement filter = getFilterByName(filterName);
-	    return filter.findElement(checkboxInputBy).isSelected();
-	}
-	
-	public String getFilterTagText()
-	{
-		return filterTag.getText();
-	}
-	//
-	public void clickShowResultsBtn()
-	{
-		showResultsButtonInFiltersSections.click();
-		scrollToTopOfPage();
-	}
-	
-	//Change number of products per page option
-    public void changeNumberOfProductsPerPage(String optionText) {
-        perPageDropdown.click();
-        waitForElementToAppear(productSortingOptionsContainerBy);
-       
-        WebElement optionElement = perPageOptions.stream()
-                .filter(element -> element
-                .getText()
-                .equals(optionText))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("No such element as: " + optionText));
-        optionElement.click();
-        waitForElementToDisappear(productSortingOptionsContainerBy);
     }
 	
 
