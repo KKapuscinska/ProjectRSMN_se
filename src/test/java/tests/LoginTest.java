@@ -33,12 +33,14 @@ public class LoginTest extends BaseTest {
 		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
+				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+				"Expected current URL to be login page.");
 	}
 
 	@Test(groups = { "smoketests" })
@@ -47,16 +49,19 @@ public class LoginTest extends BaseTest {
 
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+				"Expected current URL to be login page.");
 
 		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
+				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+				"Expected current URL to be login page.");
 	}
 
 	@Test
@@ -65,13 +70,16 @@ public class LoginTest extends BaseTest {
 
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"));
+		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+				"Expected current URL to be login page.");
 
-		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "password");
+		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "password", 
+				"Expected password input field to be of type 'password'");
 
 		loginPage.clickShowPasswordIcon();
 
-		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "text");
+		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "text",
+				"Expected password input field to be of type 'text'");
 
 	}
 
