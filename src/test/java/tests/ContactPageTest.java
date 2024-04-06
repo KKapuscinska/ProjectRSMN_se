@@ -37,29 +37,34 @@ public class ContactPageTest extends BaseTest{
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.emailInputBy)))
-				.getText(), "Proszę podaj adres e-mail.");
+				.getText(), "Proszę podaj adres e-mail.",
+				"Expected specific validation message for the 'email' field.");
 		
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.messageInputBy)))
-				.getText(), "Proszę wpisać treść wiadomości");
+				.getText(), "Proszę wpisać treść wiadomości",
+				"Expected specific validation message for the 'message' field.");
 
 		// Checking the validation message - Captcha
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.recaptchaBy)))
-				.getText(), "Proszę wypełnić captchę");
+				.getText(), "Proszę wypełnić captchę",
+				"Expected specific validation message for 'recaptcha' field.");
 
 		contactPage.fillPhone("a$");
 
 		// Checking validation of entering letter/special char. in phone number field
-		Assert.assertEquals(contactPage.phoneInput.getText(), "");
+		Assert.assertEquals(contactPage.phoneInput.getText(), "",
+				"Expected phone input field to be empty");
 
 		contactPage.fillPhone("6");
 		contactPage.fillEmail("a");
 
 		// Checking max message length
-		Assert.assertEquals(contactPage.messageInput.getAttribute("maxlength"), "5000");
+		Assert.assertEquals(contactPage.messageInput.getAttribute("maxlength"), "5000",
+				"Expected maximum character limit for the message field.");
 
 		contactPage.fillMessage("Kliku kliku kliku ");
 		contactPage.sendContactForm();
@@ -68,19 +73,22 @@ public class ContactPageTest extends BaseTest{
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.phoneInputBy)))
-				.getText(), "Wpisz poprawny numer telefonu");
+				.getText(), "Wpisz poprawny numer telefonu",
+				"Expected specific validation message for the 'phone number' field.");
 
 		// Checking the validation message - email without @
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.emailInputBy)))
-				.getText(), "Podany adres e-mail nie jest poprawny.");
+				.getText(), "Podany adres e-mail nie jest poprawny.",
+				"Expected specific validation message for the email field.");
 
 		// Checking the validation message - too short value in Message field
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 				.below(driver.findElement(contactPage.messageInputBy)))
-				.getText(), "Wiadomość jest za krótka");
+				.getText(), "Wiadomość jest za krótka",
+				"Expected specific validation message for the 'message' field.");
 	}
 
 	@Test
@@ -95,7 +103,8 @@ public class ContactPageTest extends BaseTest{
 		contactPage.sendContactForm();
 
 		// Checking if the correct completion of the form only activates the captcha validation message
-		Assert.assertEquals(driver.findElements(contactPage.valiadationMessageBy).size(), 1);
+		Assert.assertEquals(driver.findElements(contactPage.valiadationMessageBy).size(), 1,
+				"Expected only one validation message to appear");
 
 		
 	}
