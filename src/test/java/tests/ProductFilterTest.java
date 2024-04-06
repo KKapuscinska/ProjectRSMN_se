@@ -44,9 +44,11 @@ public class ProductFilterTest extends BaseTest {
 		productCatalogue.selectFeelAtmosphereFilter();
 		
 		boolean isFeelAtmosphereChipVisible = productCatalogue.isFeelAtmosphereChipVisibleOnProductCatalogue();
-        Assert.assertTrue(isFeelAtmosphereChipVisible);
+        Assert.assertTrue(isFeelAtmosphereChipVisible, 
+        		"Expected 'Feel Atmosphere' chip to be visible on the product catalogue page.");
 		
-        Assert.assertEquals(productCatalogue.getFeelAtmosphereFilterChipText(), "CZUJESZ KLIMAT?");
+        Assert.assertEquals(productCatalogue.getFeelAtmosphereFilterChipText(), "CZUJESZ KLIMAT?", 
+        		"Expected the 'Feel Atmosphere' filter chip to be displayed with specific text.");
         
 		driver.navigate().refresh();
 		
@@ -54,16 +56,19 @@ public class ProductFilterTest extends BaseTest {
 		productCatalogue.clickToRandomProductOnPage();
         
 		boolean isFeelAtmosphereLabelVisible = productCatalogue.isFeelAtmosphereLabelVisibleOnProductPage();
-        Assert.assertTrue(isFeelAtmosphereLabelVisible);
+        Assert.assertTrue(isFeelAtmosphereLabelVisible, 
+        		"Expected 'Feel Atmosphere' label to be visible on the product page.");
         
         driver.navigate().back();
         
         //Delete filter
         productCatalogue.clickCloseButtonOnFeelAtmosphereFilterLabel();
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        		"Expected current URL to be productCatalogue page.");
         
         boolean isFeelAtmosphereChipVisibleAfterRemoval = productCatalogue.isFeelAtmosphereChipVisibleOnProductCatalogue();
-        Assert.assertFalse(isFeelAtmosphereChipVisibleAfterRemoval);
+        Assert.assertFalse(isFeelAtmosphereChipVisibleAfterRemoval, 
+        		"Expected 'Feel Atmosphere' chip to be not visible on the product catalogue page.");
 	}
 
 	@Test(enabled = true)
@@ -73,9 +78,11 @@ public class ProductFilterTest extends BaseTest {
 		productCatalogue.selectMegaFilter();
 		
 		boolean isMegaChipVisible = productCatalogue.isMegaChipVisibleOnProductCatalogue();
-        Assert.assertTrue(isMegaChipVisible);
+        Assert.assertTrue(isMegaChipVisible, 
+        		"Expected 'Mega' chip to be visible on the product catalogue page.");
         
-		Assert.assertEquals(productCatalogue.getMegaFilterChipText(), "MEGA");
+		Assert.assertEquals(productCatalogue.getMegaFilterChipText(), "MEGA", 
+        		"Expected the 'Mega' filter chip to be displayed with specific text.");
 		
 		Thread.sleep(1000);
 
@@ -92,10 +99,12 @@ public class ProductFilterTest extends BaseTest {
 
 		//Delete filter
         productCatalogue.clickCloseButtonOnMegaFilterLabel();
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        		"Expected current URL to be productCatalogue page.");
         
         boolean isMegaChipVisibleAfterRemoval = productCatalogue.isMegaChipVisibleOnProductCatalogue();
-        Assert.assertFalse(isMegaChipVisibleAfterRemoval);
+        Assert.assertFalse(isMegaChipVisibleAfterRemoval, 
+        		"Expected 'Mega' chip to be not visible on the product catalogue page.");
         
 	}
 	
@@ -107,9 +116,11 @@ public class ProductFilterTest extends BaseTest {
 		productCatalogue.selectPromotionsFilter();
 		
 		boolean isPromotionChipVisible = productCatalogue.isPromotionChipVisibleOnProductCatalogue();
-        Assert.assertTrue(isPromotionChipVisible);
+        Assert.assertTrue(isPromotionChipVisible, 
+        		"Expected 'Promotion' chip to be visible on the product catalogue page.");
 		
-		Assert.assertEquals(productCatalogue.getPromotionsFilterChipText(), "PROMOCJA");
+		Assert.assertEquals(productCatalogue.getPromotionFilterChipText(), "PROMOCJA", 
+        		"Expected the 'Promotion' filter chip to be displayed with specific text.");
 		
 		driver.navigate().refresh();
 		
@@ -127,10 +138,12 @@ public class ProductFilterTest extends BaseTest {
 		//Delete filter
         productCatalogue.clickCloseButtonOnPromotionFilterLabel();
         
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj");
+        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        		"Expected current URL to be productCatalogue page.");
         
         boolean isPromotionChipVisibleAfterRemoval = productCatalogue.isPromotionChipVisibleOnProductCatalogue();
-        Assert.assertFalse(isPromotionChipVisibleAfterRemoval);
+        Assert.assertFalse(isPromotionChipVisibleAfterRemoval, 
+        		"Expected 'Promotion' chip to be not visible on the product catalogue page.");
 
 	}
 
