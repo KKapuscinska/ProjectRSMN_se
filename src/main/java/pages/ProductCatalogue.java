@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -18,31 +19,84 @@ import main.java.pageObject.PageObject;
 public class ProductCatalogue extends PageObject{
 
 	WebDriver driver;
+
+	Actions actions;
 	
 	public ProductCatalogue(WebDriver driver) {
 		super(driver);
 		this.driver=driver;
+		this.actions = new Actions(driver);
 		PageFactory.initElements(driver, this);
 	}
 
 	//WebElements declarations
 	
-	//Product
-	@FindBy(css=".product-list__col--thirds")
-	public
-	List<WebElement> productList;
-	
+	//Product Catalogue
 	@FindBy(xpath="//div[starts-with(@data-testid, 'product-tile')]")
 	public
-	List<WebElement> productListNew;
+	List<WebElement> productList;
 	
 	@FindBy(css=".tile-product__name")
 	public
 	List<WebElement> productNameList;
 	
+	@FindBy(css=".h3")
+	public
+	WebElement headerElement;
+	
+	@FindBy(css=".nav-user__quantity")
+	public
+	WebElement shoppingCartQuantityIcon;
+	
+	@FindBy(css=".Toastify__toast-body")
+	public
+	WebElement toastElement;
+	
+	public By productListBy = By.xpath("//div[starts-with(@data-testid, 'product-tile')]");
+	By availableToSellProductListBy = By.cssSelector(".product-list__col--thirds .nav-user__icon");
+	public By shoppingCartIconOnProductBy = By.cssSelector(".tile-product__add-list-plus");
+	public By productNameVisibleInProductCatalogueBy = By.cssSelector(".tile-product__name strong");
 	By theLowestPriceInfoBy = By.cssSelector(".tile-product__lowest-price");
 	By productTitleInSearchPageBy = By.cssSelector(".tile-product__name strong");
+	By shoppingCartDropdownBy = By.id("dropdown-mini_basket");
+	By shoppingCartQuantityIconBy = By.cssSelector(".nav-user__quantity");
 	
+	//Product Page
+	@FindBy(css = ".product-info__name > h1.h1")
+	public
+    WebElement productPageNameElement;
+	
+	@FindBy(css = ".product-price .h2")
+	public
+    WebElement productPagePriceElement;
+	
+	
+	//ShoppingCart
+	@FindBy(className="cart-product")
+	public
+	List<WebElement> cartProductsList;
+	
+	@FindBy(css = ".cart-product__name")
+	public
+    WebElement cartProductNameElement;
+	
+	@FindBy(css = ".sri-select__selected")
+	public
+    WebElement quantityOfProductInCart;
+	
+	@FindBy(css = ".cart-product__quantity")
+	public
+    WebElement quantityDropdownElement;
+	
+	@FindBy(css = ".sri-select__item")
+	public
+	List<WebElement> quantityDropdownElements;
+	
+	By RemoveBtnBy = By.cssSelector(".btn-del");
+	By cartProductNameBy = By.cssSelector(".cart-product__name strong");
+	By cartProductPriceBy = By.cssSelector(".cart-product__price");
+	By cartProductListBy = By.cssSelector(".cart-product");
+	By cartQuantityDropdownBy = By.cssSelector(".sri-select__items-container");
 	
 	//Recommendations filters
 	@FindBy(css = "button[data-testid='recommended-select-open-btn']")
@@ -205,7 +259,7 @@ public class ProductCatalogue extends PageObject{
 		submitPromotionsFilters();	
 	}
 	
-	public String getPromotionsFilterChipText() {
+	public String getPromotionFilterChipText() {
 		return promotionFilterChip.getText();
 	}
 	
@@ -223,6 +277,18 @@ public class ProductCatalogue extends PageObject{
 
 	//Methods related to products
 
+	public List<WebElement> getProductList() {
+        return driver.findElements(productListBy);
+    }
+	
+	public List<WebElement> getAvailableToSellProductList() {
+        return driver.findElements(availableToSellProductListBy);
+    }
+	
+	public List<WebElement> getShoppingCartIconList() {
+        return driver.findElements(shoppingCartIconOnProductBy);
+    }
+	
 	public void clickToRandomProductOnPage() {
 		
 		Random random = new Random();
@@ -231,6 +297,16 @@ public class ProductCatalogue extends PageObject{
         randomProduct.click();
 	}
 	
+	public void addToShoppingCartFirstAvailableProductOnProductCatalogue() {
+		waitForElementToAppear(productListBy);
+		List<WebElement> products = getAvailableToSellProductList();
+			if (products.size() > 0) {
+				WebElement firstProduct = products.get(0);
+				firstProduct.click();
+			}	
+			waitForElementToAppear(shoppingCartQuantityIconBy);
+	}
+
 	
 	public List<String> getProductsMissingTheLowestPriceInformation() {
         List<String> productsWithoutTheLowestPriceInfo = new ArrayList<>();
@@ -259,5 +335,56 @@ public class ProductCatalogue extends PageObject{
         return productsWithoutBadge;
     }
 	
+	//Methods related to shopping cart
+	
+		public void clickRemoveButtonInCartForAllProducts() {
+	        List<WebElement> removeButtons = driver.findElements(RemoveBtnBy);
+	        for (WebElement button : removeButtons) {
+	            button.click();
+	        }
+	        waitForElementToPresentNumberOfElements(cartProductListBy, 0);
+	    }
+		
+		
+	public String getTextFromHeaderElement() {
+	    return headerElement.getText();
+	}
+	
+	
+	public List<String> getCartProductNames() {
+	    List<String> productNames = new ArrayList<>();
+	    List<WebElement> cartProductElements = driver.findElements(cartProductNameBy);
+	    for (WebElement cartProductElement : cartProductElements) {
+	        productNames.add(cartProductElement.getText());
+	    }
+	    return productNames;
+	}
+	
+	public List<String> getCartProductPrices() {
+	    List<String> productPrices = new ArrayList<>();
+	    List<WebElement> cartProductPriceElements = driver.findElements(cartProductPriceBy);
+	    for (WebElement cartProductPriceElement : cartProductPriceElements) {
+	        productPrices.add(cartProductPriceElement.getText());
+	    }
+	    return productPrices;
+	}
+
+	public String getProductQuantityInCartFromCounter() {
+		return quantityOfProductInCart.getText();
+	}
+	
+	public String getProductQuantityInCartFromIcon() {
+		return shoppingCartQuantityIcon.getText();
+	}
+	
+	public int getNumberOfUniqueProductsInCart() {
+		return cartProductsList.size();
+	}
+	
+	public void openQuantityProductDropdownInCart() {
+		waitForElementToAppear(cartProductListBy);
+		quantityDropdownElement.click();
+		waitForElementToAppear(cartQuantityDropdownBy);
+	}
 
 }
