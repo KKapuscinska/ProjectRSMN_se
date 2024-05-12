@@ -76,7 +76,7 @@ public class PageObject {
 	@FindBy(css = "a[title='Konto użytkownika']")
     WebElement userAccountLink;
 	
-	@FindBy(xpath="//span[text()='Zaloguj się']")
+	@FindBy(xpath="//button[text()='Zaloguj się']")
 	WebElement loginButton;
     
     @FindBy(xpath="//button[text()='Wyloguj']")
@@ -111,7 +111,7 @@ public class PageObject {
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");
 	By userAccountDropdownBy = By.cssSelector("a[title='Konto użytkownika']+.nav-user__dropdown");
-	By loginPopupBy = By.className("login-form");
+	By loginPopupBy = By.className("login-form__wrapper");
 	By profileTabElementBy = By.className("profile__nav");
 
 	
@@ -140,8 +140,6 @@ public class PageObject {
 
 	public void clickAccountButtonIcon() {
 		userAccountLink.click();
-		waitForElementToAppear(profileTabElementBy);
-		
 	 }
 		
 	public void hoverOverUserAccountLinkAndClickLogin() {

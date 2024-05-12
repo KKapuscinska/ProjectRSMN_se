@@ -29,6 +29,7 @@ public class LoginTest extends BaseTest {
 	@Description("User can successfully log in and log out via a popup login window.")
 	public void successfulLoginViaPopup() throws InterruptedException, IOException {
 
+		homePage.goToHomePage();
 		homePage.hoverOverUserAccountLinkAndClickLogin();
 		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
 		homePage.clickAccountButtonIcon();
