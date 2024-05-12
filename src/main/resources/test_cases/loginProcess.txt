@@ -61,7 +61,17 @@ failureLoginInvalidLength()
     6. Verify appearance of error message
 
 
+User 0 - Plain user
+log: automation224@gmail.com
+pass: Tester123
 
+User 1 - favorite products added, purchase history available
+log: automation224+1@gmail.com
+pass: Tester123
+
+User 2 - rossne user, rossman club user 
+log: automation224+2@gmail.com
+pass: Tester123
     
     
 
