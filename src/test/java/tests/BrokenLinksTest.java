@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.asserts.SoftAssert;
@@ -16,6 +19,7 @@ import main.java.pages.LoginPage;
 import test.java.basetest.BaseTest;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class BrokenLinksTest extends BaseTest{
@@ -126,12 +130,12 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 	}
 	
-	@Test(groups = {"smoketests"})
+	@Test(dataProvider="getData", groups = {"smoketests"})
 	@Description("Check functionality of profile tab links.")
-	public void checkProfileTabLinks() throws MalformedURLException, IOException, InterruptedException {
+	public void checkProfileTabLinks(HashMap<String, String> input) throws MalformedURLException, IOException, InterruptedException {
 		
 		loginPage.goToLoginPage();
-		loginPage.loginByCorrectCredentials("automation224+2@gmail.com", "Tester123");
+		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
 		loginPage.clickAccountButtonIcon();
 		
 		SoftAssert a = new SoftAssert();
@@ -154,6 +158,13 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 		
 		loginPage.logout();
+	}
+	
+	@DataProvider
+	public Object[][] getData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginValidData.json");
+		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 
 }
