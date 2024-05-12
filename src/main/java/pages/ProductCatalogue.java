@@ -80,6 +80,10 @@ public class ProductCatalogue extends PageObject{
 	public
     WebElement cartProductNameElement;
 	
+	@FindBy(css = ".price-details__value-total")
+	public
+    WebElement cartTotalValue;
+	
 	@FindBy(css = ".sri-select__selected")
 	public
     WebElement quantityOfProductInCart;
@@ -96,7 +100,7 @@ public class ProductCatalogue extends PageObject{
 	By cartProductNameBy = By.cssSelector(".cart-product__name strong");
 	By cartProductPriceBy = By.cssSelector(".cart-product__price");
 	By cartProductListBy = By.cssSelector(".cart-product");
-	By cartQuantityDropdownBy = By.cssSelector(".sri-select__items-container");
+	public By cartQuantityDropdownBy = By.cssSelector(".sri-select__items-container");
 	
 	//Recommendations filters
 	@FindBy(css = "button[data-testid='recommended-select-open-btn']")
@@ -337,14 +341,18 @@ public class ProductCatalogue extends PageObject{
 	
 	//Methods related to shopping cart
 	
-		public void clickRemoveButtonInCartForAllProducts() {
-	        List<WebElement> removeButtons = driver.findElements(RemoveBtnBy);
-	        for (WebElement button : removeButtons) {
-	            button.click();
-	        }
-	        waitForElementToPresentNumberOfElements(cartProductListBy, 0);
+	public void clickRemoveButtonInCartForAllProducts() {
+	    List<WebElement> removeButtons = driver.findElements(RemoveBtnBy);
+	    for (WebElement button : removeButtons) {
+	        button.click();
 	    }
+	    waitForElementToPresentNumberOfElements(cartProductListBy, 0);
+	 }
 		
+	public void clearCart() throws InterruptedException {
+		goToShoppingCart();
+		clickRemoveButtonInCartForAllProducts();
+	}
 		
 	public String getTextFromHeaderElement() {
 	    return headerElement.getText();
@@ -367,6 +375,11 @@ public class ProductCatalogue extends PageObject{
 	        productPrices.add(cartProductPriceElement.getText());
 	    }
 	    return productPrices;
+	}
+	
+	public String getShoppingCartValue() {
+		String cartValue = cartTotalValue.getText();
+		return cartValue;
 	}
 
 	public String getProductQuantityInCartFromCounter() {
