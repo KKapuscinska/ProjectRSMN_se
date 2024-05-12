@@ -1,0 +1,20 @@
+[
+    {
+        "username": "automation224@gmail.com",
+        "password": "Tester123",
+        "description": "Plain user"
+    },
+
+    {
+        "username": "automation224+1@gmail.com",
+        "password": "Tester123",
+        "description": "favorite products added, purchase history available"
+    },
+
+    {
+        "username": "automation224+2@gmail.com",
+        "password": "Tester123",
+        "description": "rossne user, rossman club user"
+    }
+    
+]

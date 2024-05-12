@@ -36,44 +36,13 @@ Preconditions:
 1. Navigate to url 'www.rossmann.pl/logowanie'
 
 
-TestCase 1 - Try to log in with empty fields
-failureLoginEmptyFields()
+TestCase 1 - User cannot log in with an incorrect credentials
+failureLogin()
 
-    1. Click the login button without entering any credentials
+    1a. Click the login button without entering any credentials
+    1b. Enter incorrect login or password
+    1c. Enter one char. into the login field
+    1d. Enter >100 characters into the login field
 	2. Verify appearance of error messages
     
     
-TestCase 2 - try to log in with incorrect Password
-failureLoginIncorrectPassword()
-
-    1. Enter incorrect login or password
-    2. Click the login button
-    3. Verify appearance of error message
-
-TestCase 3 - Try to log in with too short/long login
-failureLoginInvalidLength()
-
-    1. Enter one char. into the login field
-	2. Click the login button
-	3. Verify appearance of error message
-    4. Enter >100 characters into the login field
-    5. Click the login button
-    6. Verify appearance of error message
-
-
-User 0 - Plain user
-log: automation224@gmail.com
-pass: Tester123
-
-User 1 - favorite products added, purchase history available
-log: automation224+1@gmail.com
-pass: Tester123
-
-User 2 - rossne user, rossman club user 
-log: automation224+2@gmail.com
-pass: Tester123
-    
-    
-
-
-

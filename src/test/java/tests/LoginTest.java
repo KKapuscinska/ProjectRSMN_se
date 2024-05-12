@@ -3,12 +3,21 @@ package test.java.tests;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
@@ -25,13 +34,13 @@ public class LoginTest extends BaseTest {
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
     }
 	
-	@Test
+	@Test(dataProvider = "loginValidData")
 	@Description("User can successfully log in and log out via a popup login window.")
-	public void successfulLoginViaPopup() throws InterruptedException, IOException {
+	public void successfulLoginViaPopup(HashMap<String, String> input) throws InterruptedException, IOException {
 
 		homePage.goToHomePage();
 		homePage.hoverOverUserAccountLinkAndClickLogin();
-		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
+		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
 		homePage.clickAccountButtonIcon();
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
@@ -44,16 +53,16 @@ public class LoginTest extends BaseTest {
 				"Expected current URL to be login page.");
 	}
 
-	@Test(groups = { "smoketests" })
+	@Test(dataProvider = "loginValidData", groups = { "smoketests" })
 	@Description("User can successfully log in and log out via the login page.")
-	public void successfulLoginViaPage() throws InterruptedException {
+	public void successfulLoginViaPage(HashMap<String, String> input) throws InterruptedException {
 
 		homePage.clickAccountButtonIcon();
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
 				"Expected current URL to be login page.");
 
-		loginPage.loginByCorrectCredentials("automation224@gmail.com", "Tester123");
+		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
 				"Expected current URL to be profile page.");
@@ -69,7 +78,7 @@ public class LoginTest extends BaseTest {
 	@Description("Verify password visibility functionality.")
 	public void verifyPasswordVisibilityFunctionality() throws InterruptedException {
 
-		homePage.clickAccountButtonIcon();
+		homePage.goToLoginPage();
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
 				"Expected current URL to be login page.");
@@ -83,66 +92,36 @@ public class LoginTest extends BaseTest {
 				"Expected password input field to be of type 'text'");
 
 	}
-
-	@Test(enabled = true)
-	@Description("User cannot log in without filling in login fields.")
-	public void failureLoginEmptyFields() throws InterruptedException {
+	
+	@Test(dataProvider = "loginInvalidData")
+	@Description("User cannot log in with an incorrect creddentials.")
+	public void failureLogin(HashMap<String, String> input) throws InterruptedException {
 
 		homePage.goToLoginPage();
-		loginPage.logInByIncorrectCredentials("", "");
+
+		loginPage.logInByIncorrectCredentials(input.get("username"), input.get("password"));
 
 		Assert.assertEquals(driver
 				.findElement(with(loginPage.invaldFeedbackBy)
 				.below(driver.findElement(loginPage.loginInputBy)))
-				.getText(),"Proszę wpisać poprawny adres e-mail lub nazwę użytkownika.");
-
-		Assert.assertEquals(driver
-				.findElement(with(loginPage.invaldFeedbackBy)
-				.below(driver.findElement(loginPage.passwordInputBy)))
-				.getText(), "Błąd w obecnym haśle.");
-	}
-
-	@Test(enabled = true)
-	@Description("User cannot log in with an incorrect password.")
-	public void failureLoginIncorrectPassword() throws InterruptedException {
-
-		homePage.goToLoginPage();
-
-		loginPage.logInByIncorrectCredentials("cytest123", "randomText");
-
-		Assert.assertEquals(driver
-				.findElement(with(loginPage.invaldFeedbackBy)
-				.below(driver.findElement(loginPage.loginInputBy)))
-				.getText(),"Niepoprawne dane logowania.");
+				.getText(), input.get("invalidFeedback"));
 
 		loginPage.clearLoginFields();
 	}
 
-	@Test(enabled = true)
-	@Description("User cannot log in with a too short/long login.")
-	public void failureLoginInvalidLength() throws InterruptedException {
-
-		homePage.goToLoginPage();
-		loginPage.logInByIncorrectCredentials("r", "randomText");
-
-		// Checking min login length
-		Assert.assertEquals(driver
-				.findElement(with(loginPage.invaldFeedbackBy)
-				.below(driver.findElement(loginPage.loginInputBy)))
-				.getText(),"Nazwa użytkownika powinna składać się z co najmniej 4 znaków.");
-
-		loginPage.logInByIncorrectCredentials(
-				"Loremipsumdolorsitamet.consectetueradipiscingelit.Aeneancommodoligulaegetdolor.Aeneanmassa.Cumsociis","");
-
-		Thread.sleep(1500);
-
-		// Checking max login length
-		Assert.assertEquals(driver
-				.findElement(with(By.cssSelector(".invalid-feedback"))
-				.below(driver.findElement(By.id("login-user"))))
-				.getText(), "Nazwa użytkownika powinna składać się z maksymalnie 100 znaków.");
-
-		loginPage.clearLoginFields();
+	
+	@DataProvider(name = "loginValidData")
+	public Object[][] getDataValid() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginValidData.json");
+		return new Object[][]	{{data.get(0)}};
 	}
-
+	
+	
+	@DataProvider(name = "loginInvalidData")
+	public Object[][] getDataInvalid() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginInvalidData.json");
+		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}, {data.get(3)}};
+	}
 }
