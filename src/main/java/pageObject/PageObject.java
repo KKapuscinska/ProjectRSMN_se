@@ -88,18 +88,31 @@ public class PageObject {
 	@FindBy(id = "onetrust-accept-btn-handler")
     WebElement acceptBtnInCookieBar;
 
+	@FindBy(css=".nav-company section a")
+	public
+	List<WebElement> companyLinkList;
+	
 	@FindBy(css=".nav__link")
 	public
-	List<WebElement> mainCategoryList;
+	List<WebElement> mainCategoryLinkList;
 
 	@FindBy(css=".sub-nav__link")
 	public
-	List<WebElement> subCategoryList;
+	List<WebElement> subCategoryLinkList;
+	
+	@FindBy(css=".footer-nav__item a")
+	public
+	List<WebElement> footerLinkList;
+	
+	@FindBy(css=".profile__nav a")
+	public
+	List<WebElement> profileLinkList;
 	
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");
 	By userAccountDropdownBy = By.cssSelector("a[title='Konto użytkownika']+.nav-user__dropdown");
 	By loginPopupBy = By.className("login-form");
+	By profileTabElementBy = By.className("profile__nav");
 
 	
 	//Methods related to pages
@@ -127,6 +140,8 @@ public class PageObject {
 
 	public void clickAccountButtonIcon() {
 		userAccountLink.click();
+		waitForElementToAppear(profileTabElementBy);
+		
 	 }
 		
 	public void hoverOverUserAccountLinkAndClickLogin() {
@@ -169,6 +184,11 @@ public class PageObject {
         js.executeScript("window.scrollTo(0, 0);");
     }
 	
+	public void scrollToBottomOfPage() {
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+	}
+
 	
 	
 }
