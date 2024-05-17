@@ -1,0 +1,12 @@
+[
+    {
+        "message": "",
+        "messageInvalidFeedback": "Proszę wpisać treść wiadomości",
+        "description": "Empty message field"
+    },
+    {
+        "message": "Short message",
+        "messageInvalidFeedback": "Wiadomość jest za krótka",
+        "description": "Too short message"
+    }
+]

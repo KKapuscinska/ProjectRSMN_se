@@ -1,0 +1,8 @@
+[
+    {
+        "name": "123",
+        "lastName": "123",
+        "nameInvalidFeedback": "To pole nie może zawierać cyfr",
+        "description": "Invalid name format"
+    }
+]

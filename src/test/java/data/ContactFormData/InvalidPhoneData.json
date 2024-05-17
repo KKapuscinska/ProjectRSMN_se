@@ -1,0 +1,7 @@
+[
+    {
+        "phoneNumber": "12345678",
+        "phoneNumberInvalidFeedback": "Wpisz poprawny numer telefonu",
+        "description": "Too short phone number"
+    }
+]

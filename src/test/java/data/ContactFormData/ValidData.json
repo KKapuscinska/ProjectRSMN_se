@@ -1,0 +1,21 @@
+[
+    {
+        "name": "Krzysztof",
+        "lastName": "Nowak",
+        "email": "test@gmail.com",
+        "phoneNumber": "500500500",
+        "message": "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et",
+        "reCaptchaInvalidFeedback": "Proszę wypełnić captchę",
+        "description": "Valid data set 1"
+    },
+    {
+        "name": "Jaśmina",
+        "lastName": "Nowak-Kowalska",
+        "email": "a_test@o2.pl",
+        "phoneNumber": "500500500",
+        "message": "!@#$%^&*()_+{}|:<>?[];',./`~1234567890",
+        "reCaptchaInvalidFeedback": "Proszę wypełnić captchę",
+        "description": "Valid data set 2"
+    }
+    
+]

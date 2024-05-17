@@ -1,0 +1,23 @@
+
+    [
+        {
+            "email": "",
+            "emailInvalidFeedback": "Proszę podaj adres e-mail.",
+            "description": "Empty email field"
+        },
+    
+        {
+            "email": "invalidEmail",
+            "emailInvalidFeedback": "Podany adres e-mail nie jest poprawny.",
+            "description": "Invalid email format"
+        },
+    
+        {
+            "email": "1234567",
+            "emailInvalidFeedback": "Podany adres e-mail nie jest poprawny.",
+            "description": "Invalid email format"
+        }
+    ]
+    
+
+    
