@@ -87,26 +87,34 @@ public class PageObject {
     
 	@FindBy(id = "onetrust-accept-btn-handler")
     WebElement acceptBtnInCookieBar;
-
-	@FindBy(css=".nav-company section a")
-	public
-	List<WebElement> companyLinkList;
 	
-	@FindBy(css=".nav__link")
+	//Link lists
+	@FindBy(xpath="//*[@id=\"header\"]/section/section/div[2]/div[starts-with(@class, 'NavUserButtons-module_btnWithDropdown')]/a")
 	public
-	List<WebElement> mainCategoryLinkList;
-
-	@FindBy(css=".sub-nav__link")
-	public
-	List<WebElement> subCategoryLinkList;
+	List<WebElement> navUserDropdownButtonsList;
 	
-	@FindBy(css=".footer-nav__item a")
+	@FindBy(xpath="//*[@id=\"header\"]/section/section/div[2]/a[starts-with(@class, 'NavUserButtons-module')]")
+	public
+	List<WebElement> navUserButtonsList;
+	
+	@FindBy(xpath="//*[@id='__next']/section//section//ul//li//a")
+	public
+	List<WebElement> topBarCategoryLinkList;
+	
+	@FindBy(xpath="//*[@id='__next']/section/section/div/div[starts-with(@class, 'Capsules-module_capsules')]//a")
+	public
+	List<WebElement> capsuleLinkList;
+	
+	@FindBy(xpath="//*[@id='__next']/section/section/div/div[starts-with(@class, 'Capsules-module_campaigns')]//a")
+	public
+	List<WebElement> campainLinkList;
+	
+	@FindBy(xpath="//*[@id='__next']/section/section/div//div[starts-with(@class, 'Navigation-module_content')]//div//a")
 	public
 	List<WebElement> footerLinkList;
 	
-	@FindBy(css=".profile__nav a")
-	public
-	List<WebElement> profileLinkList;
+
+	
 	
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");

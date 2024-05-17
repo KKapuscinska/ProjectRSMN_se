@@ -16,6 +16,7 @@ import main.java.pageObject.PageObject;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
+import main.java.pages.ProfilePage;
 import test.java.basetest.BaseTest;
 
 import org.testng.annotations.BeforeTest;
@@ -26,20 +27,28 @@ public class BrokenLinksTest extends BaseTest{
 
 	HomePage homePage;
 	LoginPage loginPage;
+	ProfilePage profilePage;
 	
 	@BeforeTest
     public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
+		profilePage = PageFactory.initElements(driver, ProfilePage.class);
     }
 	
-	@Test(groups = {"smoketests"})
-	@Description("Check functionality of company link in the top of the page.")
-	public void checkTopBarCompanyLinks() throws MalformedURLException, IOException {
+	
+	@Test(dataProvider="getLoginData", groups = {"smoketests"})
+	@Description("Check functionality of profile tab links.")
+	public void checkProfileTabLinks(HashMap<String, String> input) throws MalformedURLException, IOException, InterruptedException {
+		
+		loginPage.goToLoginPage();
+		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
+		loginPage.clickAccountButtonIcon();
+		
 		
 		SoftAssert a = new SoftAssert();
 
-		for (WebElement link : homePage.companyLinkList) {
+		for (WebElement link : profilePage.profileLinkList) {
 			String url = link.getAttribute("href");
 
 			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -48,22 +57,63 @@ public class BrokenLinksTest extends BaseTest{
 			conn.connect();
 			int respCode = conn.getResponseCode();
 
-			// System.out.println(respCode);
+			//System.out.println(respCode);
+
+			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
+
+		}
+		
+		a.assertAll();
+		
+		loginPage.logout();
+	}
+
+	@Test(groups = {"smoketests"})
+	@Description("Check functionality of user buttons - profile, favorite products and shopping cart.")
+	public void checkUserButtonsLinks() throws MalformedURLException, IOException, InterruptedException {
+		
+		SoftAssert a = new SoftAssert();
+
+		for (WebElement link : homePage.navUserDropdownButtonsList) {
+			String url = link.getAttribute("href");
+
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+
+			conn.setRequestMethod("HEAD");
+			conn.connect();
+			int respCode = conn.getResponseCode();
+
+			//System.out.println(respCode);
 
 			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
 
 		}
 		a.assertAll();
+		
+		for (WebElement link : homePage.navUserButtonsList) {
+			String url = link.getAttribute("href");
 
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+
+			conn.setRequestMethod("HEAD");
+			conn.connect();
+			int respCode = conn.getResponseCode();
+
+			//System.out.println(respCode);
+
+			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
+
+		}
+		a.assertAll();
 	}
 	
 	@Test(groups = {"smoketests"})
-	@Description("Check functionality of main categories menu links.")
-	public void checkMainCategoriesMenuLinks() throws MalformedURLException, IOException {
-		
+	@Description("Check functionality of top bar category, Promotions and newspaper links.")
+	public void checkCategoryLinks() throws MalformedURLException, IOException, InterruptedException {
+			
 		SoftAssert a = new SoftAssert();
 
-		for (WebElement link : homePage.mainCategoryLinkList) {
+		for (WebElement link : homePage.topBarCategoryLinkList) {
 			String url = link.getAttribute("href");
 
 			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -72,22 +122,21 @@ public class BrokenLinksTest extends BaseTest{
 			conn.connect();
 			int respCode = conn.getResponseCode();
 
-			// System.out.println(respCode);
+			//System.out.println(respCode);
 
 			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
 
 		}
 		a.assertAll();
-
-	}
+	}	
 
 	@Test(groups = {"smoketests"})
-	@Description("Check functionality of subcategories menu links.")
-	public void checkSubcategoriesMenuLinks() throws MalformedURLException, IOException {
-		
+	@Description("Check functionality of top bar products capsule links.")
+	public void checkCapsuleLinks() throws MalformedURLException, IOException, InterruptedException {
+			
 		SoftAssert a = new SoftAssert();
 
-		for (WebElement link : homePage.subCategoryLinkList) {
+		for (WebElement link : homePage.capsuleLinkList) {
 			String url = link.getAttribute("href");
 
 			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -96,20 +145,40 @@ public class BrokenLinksTest extends BaseTest{
 			conn.connect();
 			int respCode = conn.getResponseCode();
 
-			// System.out.println(respCode);
+			//System.out.println(respCode);
 
 			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
 
 		}
 		a.assertAll();
 	}
+	
+	@Test(groups = {"smoketests"})
+	@Description("Check functionality of top bar Campain links.")
+	public void checkCampainLinks() throws MalformedURLException, IOException, InterruptedException {
+			
+		SoftAssert a = new SoftAssert();
+
+		for (WebElement link : homePage.campainLinkList) {
+			String url = link.getAttribute("href");
+
+			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+
+			conn.setRequestMethod("HEAD");
+			conn.connect();
+			int respCode = conn.getResponseCode();
+
+			//System.out.println(respCode);
+
+			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
+
+		}
+		a.assertAll();
+	}	
 	
 	@Test(groups = {"smoketests"})
 	@Description("Check functionality of footer links.")
 	public void checkFooterLinks() throws MalformedURLException, IOException, InterruptedException {
-		
-		homePage.goToShoppingCart();
-		homePage.scrollToBottomOfPage();
 		
 		SoftAssert a = new SoftAssert();
 
@@ -122,48 +191,18 @@ public class BrokenLinksTest extends BaseTest{
 			conn.connect();
 			int respCode = conn.getResponseCode();
 
-			// System.out.println(respCode);
+			//System.out.println(respCode);
 
 			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
 
 		}
 		a.assertAll();
-	}
-	
-	@Test(dataProvider="getData", groups = {"smoketests"})
-	@Description("Check functionality of profile tab links.")
-	public void checkProfileTabLinks(HashMap<String, String> input) throws MalformedURLException, IOException, InterruptedException {
-		
-		loginPage.goToLoginPage();
-		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
-		loginPage.clickAccountButtonIcon();
-		
-		SoftAssert a = new SoftAssert();
-
-		for (WebElement link : homePage.profileLinkList) {
-			String url = link.getAttribute("href");
-
-			HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
-
-			conn.setRequestMethod("HEAD");
-			conn.connect();
-			int respCode = conn.getResponseCode();
-
-			// System.out.println(respCode);
-
-			a.assertTrue(respCode < 400, "The link with text: " + link.getText() + " is broken with code: " + respCode);
-
-		}
-		
-		a.assertAll();
-		
-		loginPage.logout();
 	}
 	
 	@DataProvider
-	public Object[][] getData() throws IOException
+	public Object[][] getLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\ValidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 
