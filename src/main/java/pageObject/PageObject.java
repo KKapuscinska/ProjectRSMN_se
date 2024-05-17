@@ -73,13 +73,13 @@ public class PageObject {
 	@FindBy(css = ".nav-user-product__btn")
     WebElement goToCartBtn;
 	
-	@FindBy(css = "a[title='Konto użytkownika']")
+	@FindBy(css = "a[title='Profil']")
     WebElement userAccountLink;
 	
 	@FindBy(xpath="//button[text()='Zaloguj się']")
 	WebElement loginButton;
     
-    @FindBy(xpath="//button[text()='Wyloguj']")
+    @FindBy(xpath="//button[text()='Wyloguj się']")
 	WebElement logoutButton;
 
     @FindBy(css = "a[title='Koszyk']")
@@ -110,7 +110,7 @@ public class PageObject {
 	
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");
-	By userAccountDropdownBy = By.cssSelector("a[title='Konto użytkownika']+.nav-user__dropdown");
+	By userAccountDropdownBy = By.xpath("//*[starts-with(@class, 'NavUserButtons-module_dropContent')] /div");
 	By loginPopupBy = By.className("login-form__wrapper");
 	By profileTabElementBy = By.className("profile__nav");
 

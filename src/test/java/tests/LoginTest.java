@@ -34,43 +34,43 @@ public class LoginTest extends BaseTest {
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
     }
 	
-	@Test(dataProvider = "loginValidData")
+	@Test(dataProvider = "validData")
 	@Description("User can successfully log in and log out via a popup login window.")
-	public void successfulLoginViaPopup(HashMap<String, String> input) throws InterruptedException, IOException {
+	public void successfulLoginViaPopup(HashMap<String, String> formData) throws InterruptedException, IOException {
 
 		homePage.goToHomePage();
 		homePage.hoverOverUserAccountLinkAndClickLogin();
-		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
+		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("profilePageUrl")),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("loginPageUrl")),
 				"Expected current URL to be login page.");
 	}
 
-	@Test(dataProvider = "loginValidData", groups = { "smoketests" })
+	@Test(dataProvider = "validData", groups = { "smoketests" })
 	@Description("User can successfully log in and log out via the login page.")
-	public void successfulLoginViaPage(HashMap<String, String> input) throws InterruptedException {
+	public void successfulLoginViaPage(HashMap<String, String> formData) throws InterruptedException {
 
 		homePage.clickAccountButtonIcon();
 
 		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
 				"Expected current URL to be login page.");
 
-		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
+		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/profil/ustawienia-konta"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("profilePageUrl")),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("loginPageUrl")),
 				"Expected current URL to be login page.");
 	}
 
@@ -93,35 +93,35 @@ public class LoginTest extends BaseTest {
 
 	}
 	
-	@Test(dataProvider = "loginInvalidData")
+	@Test(dataProvider = "invalidData")
 	@Description("User cannot log in with an incorrect creddentials.")
-	public void failureLogin(HashMap<String, String> input) throws InterruptedException {
+	public void failureLogin(HashMap<String, String> formData) throws InterruptedException {
 
 		homePage.goToLoginPage();
 
-		loginPage.logInByIncorrectCredentials(input.get("username"), input.get("password"));
+		loginPage.logInByIncorrectCredentials(formData.get("username"), formData.get("password"));
 
 		Assert.assertEquals(driver
 				.findElement(with(loginPage.invaldFeedbackBy)
 				.below(driver.findElement(loginPage.loginInputBy)))
-				.getText(), input.get("invalidFeedback"));
+				.getText(), formData.get("invalidFeedback"));
 
 		loginPage.clearLoginFields();
 	}
 
 	
-	@DataProvider(name = "loginValidData")
-	public Object[][] getDataValid() throws IOException
+	@DataProvider(name = "validData")
+	public Object[][] getValidData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\ValidData.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
 	
-	@DataProvider(name = "loginInvalidData")
-	public Object[][] getDataInvalid() throws IOException
+	@DataProvider(name = "invalidData")
+	public Object[][] getInvalidData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginInvalidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\InvalidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}, {data.get(3)}};
 	}
 }
