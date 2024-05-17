@@ -41,6 +41,8 @@ WebDriver driver;
 	@FindBy(css = "div[name='recaptcha']")
     WebElement captchaSelector;
 	
+	public By nameInputBy = By.id("input-name-1");
+	public By lastNameInputBy = By.id("input-name-2");
 	public By emailInputBy = By.id("input-email");
 	public By messageInputBy = By.id("message");
 	public By phoneInputBy = By.id("input-phone");
@@ -82,7 +84,7 @@ WebDriver driver;
 	
 	public void fillLastName(String lastName)
 	{
-		nameInput.clear();
-		nameInput.sendKeys(lastName);
+		lastNameInput.clear();
+		lastNameInput.sendKeys(lastName);
 	}
 }

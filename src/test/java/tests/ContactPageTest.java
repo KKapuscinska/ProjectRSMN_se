@@ -6,12 +6,16 @@ import org.testng.Assert;
 import static org.openqa.selenium.support.locators.RelativeLocator.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+
 import jdk.jfr.Description;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
 import test.java.basetest.BaseTest;
 
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class ContactPageTest extends BaseTest{
@@ -27,86 +31,134 @@ public class ContactPageTest extends BaseTest{
 		homePage.acceptCookiesInCookieBar();
     }
 	
-	@Test
-	@Description("Verify contact form field validation for empty fields, invalid phone number format or letters, invalid email address format, and invalid message field length.")
-	public void contactFormValidation() {
-
+	@Test(dataProvider = "invalidNameData")
+	@Description("Verify name fields validation.")
+	public void contactFormValidationName(HashMap<String, String> formData) {
+			
+		contactPage.fillName(formData.get("name"));
+		contactPage.fillLastName(formData.get("lastName"));
 		contactPage.sendContactForm();
 
-		// Checking the validation message - blank form
+		// Checking the validation message
 		Assert.assertEquals(driver
-				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.emailInputBy)))
-				.getText(), "Proszę podaj adres e-mail.",
-				"Expected specific validation message for the 'email' field.");
+		        .findElement(with(contactPage.valiadationMessageBy)
+		        .below(driver.findElement(contactPage.nameInputBy)))
+		        .getText(), formData.get("nameInvalidFeedback"),
+		        "Expected specific validation message for the email field.");
+		    
+		Assert.assertEquals(driver
+		        .findElement(with(contactPage.valiadationMessageBy)
+		        .below(driver.findElement(contactPage.lastNameInputBy)))
+		        .getText(), formData.get("nameInvalidFeedback"),
+		        "Expected specific validation message for the email field.");
+	}
 		
-		Assert.assertEquals(driver
-				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.messageInputBy)))
-				.getText(), "Proszę wpisać treść wiadomości",
-				"Expected specific validation message for the 'message' field.");
+	@Test(dataProvider = "invalidEmailData")
+	@Description("Verify email field validation.")
+	public void contactFormValidationEmail(HashMap<String, String> formData) {
+		
+		contactPage.fillEmail(formData.get("email"));
+	    contactPage.sendContactForm();
+
+	    // Checking the validation message
+	    Assert.assertEquals(driver
+	            .findElement(with(contactPage.valiadationMessageBy)
+	            .below(driver.findElement(contactPage.emailInputBy)))
+	            .getText(), formData.get("emailInvalidFeedback"),
+	            "Expected specific validation message for the email field.");
+	}
+	
+	@Test(dataProvider = "invalidPhoneData")
+	@Description("Verify Phone Number field validation.")
+	public void contactFormValidationPhoneNumber(HashMap<String, String> formData) {
+
+	    contactPage.fillPhone(formData.get("phoneNumber"));
+	    contactPage.sendContactForm();
+
+	    // Checking the validation message
+	    Assert.assertEquals(driver
+	            .findElement(with(contactPage.valiadationMessageBy)
+	            .below(driver.findElement(contactPage.phoneInputBy)))
+	            .getText(), formData.get("phoneNumberInvalidFeedback"),
+	            "Expected specific validation message for the 'phone number' field.");
+	}
+
+	@Test(dataProvider = "invalidMessageData")
+	@Description("Verify Message field validation.")
+	public void contactFormValidationMessage(HashMap<String, String> formData) {
+		
+	    // Validating the maximum length of the message field
+	    Assert.assertEquals(contactPage.messageInput.getAttribute("maxlength"), "5000",
+	            "Expected maximum character limit for the message field.");
+
+	    contactPage.fillMessage(formData.get("message"));
+
+	    contactPage.sendContactForm();
+
+	    // Checking the validation message
+	    Assert.assertEquals(driver
+	            .findElement(with(contactPage.valiadationMessageBy)
+	            .below(driver.findElement(contactPage.messageInputBy)))
+	            .getText(), formData.get("messageInvalidFeedback"),
+	            "Expected specific validation message for the 'message' field.");
+	}
+
+	@Test(dataProvider = "validData")
+	@Description("Verify that the contact form displays only the CAPTCHA validation message when all fields are filled correctly.")
+	public void submitContactForm(HashMap<String, String> formData) {
+			
+		contactPage.fillName(formData.get("name"));
+		contactPage.fillLastName(formData.get("lastName"));
+		contactPage.fillEmail(formData.get("email"));
+		contactPage.fillPhone(formData.get("phoneNumber"));
+		contactPage.fillMessage(formData.get("message"));
+		contactPage.sendContactForm();
 
 		// Checking the validation message - Captcha
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.recaptchaBy)))
-				.getText(), "Proszę wypełnić captchę",
+		        .below(driver.findElement(contactPage.recaptchaBy)))
+		        .getText(), formData.get("reCaptchaInvalidFeedback"),
 				"Expected specific validation message for 'recaptcha' field.");
-
-		contactPage.fillPhone("a$");
-
-		// Checking validation of entering letter/special char. in phone number field
-		Assert.assertEquals(contactPage.phoneInput.getText(), "",
-				"Expected phone input field to be empty");
-
-		contactPage.fillPhone("6");
-		contactPage.fillEmail("a");
-
-		// Checking max message length
-		Assert.assertEquals(contactPage.messageInput.getAttribute("maxlength"), "5000",
-				"Expected maximum character limit for the message field.");
-
-		contactPage.fillMessage("Kliku kliku kliku ");
-		contactPage.sendContactForm();
-
-		// Checking the validation message - too short value in Phone number field
-		Assert.assertEquals(driver
-				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.phoneInputBy)))
-				.getText(), "Wpisz poprawny numer telefonu",
-				"Expected specific validation message for the 'phone number' field.");
-
-		// Checking the validation message - email without @
-		Assert.assertEquals(driver
-				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.emailInputBy)))
-				.getText(), "Podany adres e-mail nie jest poprawny.",
-				"Expected specific validation message for the email field.");
-
-		// Checking the validation message - too short value in Message field
-		Assert.assertEquals(driver
-				.findElement(with(contactPage.valiadationMessageBy)
-				.below(driver.findElement(contactPage.messageInputBy)))
-				.getText(), "Wiadomość jest za krótka",
-				"Expected specific validation message for the 'message' field.");
-	}
-
-	@Test
-	@Description("Verify that the contact form displays only the CAPTCHA validation message when all fields are filled correctly.")
-	public void submitContactForm() {
-		
-		contactPage.fillName("Krzysztof");
-		contactPage.fillLastName("Jarzyna");
-		contactPage.fillEmail("cytest@gmail.pl");
-		contactPage.fillPhone("666666666");
-		contactPage.fillMessage("Kliku kliku kliku kliku kliku");
-		contactPage.sendContactForm();
-
+		    
 		// Checking if the correct completion of the form only activates the captcha validation message
 		Assert.assertEquals(driver.findElements(contactPage.valiadationMessageBy).size(), 1,
-				"Expected only one validation message to appear");
+				"Expected only one validation message to appear");	
+		}		
 
-		
+	
+	@DataProvider(name = "invalidNameData")
+	public Object[][] getInvalidNameData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\ContactFormData\\InvalidNameData.json");
+		return new Object[][]	{{data.get(0)}};
+	}
+	
+	@DataProvider(name = "invalidEmailData")
+	public Object[][] getInvalidEmailData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\ContactFormData\\InvalidEmailData.json");
+		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 
+	@DataProvider(name = "invalidPhoneData")
+	public Object[][] getInvalidPhoneData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\ContactFormData\\InvalidPhoneData.json");
+		return new Object[][]	{{data.get(0)}};
+	}
+	
+	@DataProvider(name = "invalidMessageData")
+	public Object[][] getInvalidMessageData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\ContactFormData\\InvalidMessageData.json");
+		return new Object[][]	{{data.get(0)}, {data.get(1)}};
+	}
+	
+	@DataProvider(name = "validData")
+	public Object[][] getValidData() throws IOException
+	{
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\ContactFormData\\ValidData.json");
+		return new Object[][]	{{data.get(0)}, {data.get(1)}};
+	}
 }

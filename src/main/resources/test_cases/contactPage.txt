@@ -4,23 +4,32 @@ Preconditions:
 1. Navigate to url 'www.rossmann.pl/kontakt'
 
 
-TestCase 1 - Verify contact form field validation
-contactFormValidation()
+TestCase 1 - Verify name fields validation
+contactFormValidationName()
 	
-	1. Send the contact form without filling any fields
-	2. Verify the appearance of validation messages for the email, message, and captcha field
-	3. Verify the validation of the Phone Number field for:
-		- Letters, special char
-		- Length
-	4. Verify the validation of the Email field for:
-		- Presence of '@' symbol
-	5. Verify the validation of the Message field for:
-		- Too short value (<20 char)
-		- Too long value (>5 000char)
+	1. Verify the validation of the Name and Last Name fields
 
 
-TestCase 2 - Filling out the Contact Form
-submitContactFormAndValidateCaptchaMessage()
+TestCase 2 - Verify email field validation
+contactFormValidationEmail()
+	
+	1. Verify the validation of the Email field
+
+
+TestCase 3 - Verify Phone Number field validation
+contactFormValidationPhoneNumber()
+	
+	1. Verify the validation of the Phone Number field
+
+
+TestCase 4 - Verify Message field validation
+contactFormValidationMessage()
+	
+	1. Verify the validation of the Name nad Last Name fields
+
+
+TestCase 5 - Filling out the Contact Form
+submitContactForm()
 
     1. Enter correct values into all fields of the contact form
     2. Submit the form
