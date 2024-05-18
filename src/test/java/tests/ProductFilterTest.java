@@ -2,17 +2,12 @@ package test.java.tests;
 
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
-import main.java.pages.LoginPage;
+
 import main.java.pages.ProductCatalogue;
 import test.java.basetest.BaseTest;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -41,6 +36,7 @@ public class ProductFilterTest extends BaseTest {
 	@Description("Verify that selecting the 'Feel Atmosphere' filter working correctly.")
 	public void verifyFeelAtmosphereFilter() throws InterruptedException {
 
+		Thread.sleep(1000);
 		productCatalogue.selectFeelAtmosphereFilter();
 		
 		boolean isFeelAtmosphereChipVisible = productCatalogue.isFeelAtmosphereChipVisibleOnProductCatalogue();
@@ -63,7 +59,7 @@ public class ProductFilterTest extends BaseTest {
         
         //Delete filter
         productCatalogue.clickCloseButtonOnFeelAtmosphereFilterLabel();
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.URL_PRODUCT_CATALOGUE_PAGE, 
         		"Expected current URL to be productCatalogue page.");
         
         boolean isFeelAtmosphereChipVisibleAfterRemoval = productCatalogue.isFeelAtmosphereChipVisibleOnProductCatalogue();
@@ -88,7 +84,7 @@ public class ProductFilterTest extends BaseTest {
 
 		// Checking the display of products without 'Mega' badge
 		List<String> productsWithoutBadge = productCatalogue
-				.getProductsMissingBadge(productCatalogue.badgeSelectorMega);
+		        .getProductsMissingBadge(productCatalogue.badgeSelectorMegaXPath);
 
 		if (!productsWithoutBadge.isEmpty()) {
 			for (String product : productsWithoutBadge) {
@@ -99,7 +95,7 @@ public class ProductFilterTest extends BaseTest {
 
 		//Delete filter
         productCatalogue.clickCloseButtonOnMegaFilterLabel();
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.URL_PRODUCT_CATALOGUE_PAGE, 
         		"Expected current URL to be productCatalogue page.");
         
         boolean isMegaChipVisibleAfterRemoval = productCatalogue.isMegaChipVisibleOnProductCatalogue();
@@ -138,7 +134,7 @@ public class ProductFilterTest extends BaseTest {
 		//Delete filter
         productCatalogue.clickCloseButtonOnPromotionFilterLabel();
         
-        Assert.assertEquals(driver.getCurrentUrl(), "https://www.rossmann.pl/szukaj", 
+        Assert.assertEquals(driver.getCurrentUrl(), homePage.URL_PRODUCT_CATALOGUE_PAGE, 
         		"Expected current URL to be productCatalogue page.");
         
         boolean isPromotionChipVisibleAfterRemoval = productCatalogue.isPromotionChipVisibleOnProductCatalogue();

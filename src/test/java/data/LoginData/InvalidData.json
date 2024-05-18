@@ -2,24 +2,28 @@
     {
         "username": "",
         "password": "",
-        "invalidFeedback": "Proszę wpisać poprawny adres e-mail lub nazwę użytkownika."
+        "invalidFeedback": "Proszę wpisać poprawny adres e-mail lub nazwę użytkownika.",
+        "description": "Empty fields"
     },
 
     {
         "username": "cytest123",
         "password": "randomText",
-        "invalidFeedback": "Niepoprawne dane logowania."
+        "invalidFeedback": "Niepoprawne dane logowania.",
+        "description": "Invalid credentials"
     },
 
     {
         "username": "r",
         "password": "randomText",
-        "invalidFeedback": "Nazwa użytkownika powinna składać się z co najmniej 4 znaków."
+        "invalidFeedback": "Nazwa użytkownika powinna składać się z co najmniej 4 znaków.",
+        "description": "Too short login"
     },
     
     {
         "username": "Loremipsumdolorsitamet.consectetueradipiscingelit.Aeneancommodoligulaegetdolor.Aeneanmassa.Cumsociiss",
         "password": "randomText",
-        "invalidFeedback": "Nazwa użytkownika powinna składać się z maksymalnie 100 znaków."
+        "invalidFeedback": "Nazwa użytkownika powinna składać się z maksymalnie 100 znaków.",
+        "description": "Too long login"
     }
 ]

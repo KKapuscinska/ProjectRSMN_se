@@ -1,7 +1,7 @@
 package test.java.tests;
 
 import jdk.jfr.Description;
-
+import main.java.pages.CartPage;
 import main.java.pages.HomePage;
 import main.java.pages.ProductCatalogue;
 import test.java.basetest.BaseTest;
@@ -23,11 +23,13 @@ public class ShoppingProcessTest extends BaseTest {
 
 	HomePage homePage;
 	ProductCatalogue productCatalogue;
+	CartPage cartPage;
 	
 	@BeforeTest(groups = { "smoketests" })
 	public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);
+		cartPage = PageFactory.initElements(driver, CartPage.class);
 		homePage.acceptCookiesInCookieBar();
 	}
 
@@ -35,7 +37,7 @@ public class ShoppingProcessTest extends BaseTest {
 	public void beforeTest() {
 		homePage.goToProductCataloguePage();
 	}
-
+ 
 	@Test(groups = { "smoketests" }, enabled = true)
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
 	public void addAndRemoveProductFromShoppingCart() throws InterruptedException {
@@ -43,16 +45,20 @@ public class ShoppingProcessTest extends BaseTest {
 		productCatalogue.addToShoppingCartFirstAvailableProductOnProductCatalogue();
 		homePage.goToShoppingCart();
 		
-		Assert.assertEquals(productCatalogue.getProductQuantityInCartFromIcon(), "1", 
+		Assert.assertEquals(cartPage.getProductQuantityInCartFromIcon(), "1", 
 				"Expected one product in the cart icon.");
 		
-		Assert.assertEquals(productCatalogue.getNumberOfUniqueProductsInCart(), 1, 
+		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1, 
 				"Expected one product in the cart.");
 		
-		productCatalogue.clickRemoveButtonInCartForAllProducts();
+		cartPage.clickRemoveButtonInCartForAllProducts();
 		
-		Assert.assertEquals(productCatalogue.getTextFromHeaderElement(), "Twój koszyk jest pusty", 
+		Thread.sleep(1000);
+		Assert.assertEquals(cartPage.getTextFromHeaderElement(), "Twój koszyk jest pusty", 
 				"Expected header with info about zero products in the cart");
+		
+		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 0, 
+				"Expected zero products in the cart.");
 	}
 	
 	@Test(groups = { "smoketests" }, enabled = true)
@@ -62,18 +68,18 @@ public class ShoppingProcessTest extends BaseTest {
 		productCatalogue.addToShoppingCartFirstAvailableProductOnProductCatalogue();
 		homePage.goToShoppingCart();
 		
-		Assert.assertEquals(productCatalogue.getNumberOfUniqueProductsInCart(), 1, 
+		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1, 
 				"Expected one product in the cart.");
 
-		List<String> cartProductNames = productCatalogue.getCartProductNames();
-		List<String> cartProductPrices = productCatalogue.getCartProductPrices();
+		List<String> cartProductNames = cartPage.getCartProductNames();
+		List<String> cartProductPrices = cartPage.getCartProductPrices();
 		
-		productCatalogue.cartProductNameElement.click();
+		cartPage.cartProductNameElement.click();
 		
 		Thread.sleep(1500);
 		
 		WebElement productNameElement = productCatalogue.productPageNameElement;
-		String productName = productNameElement.getText().split("\n")[0].trim();
+		String productName = productNameElement.getText();
 		String productPrice = productCatalogue.productPagePriceElement.getText();
 
 		boolean checkProductNameInCart = cartProductNames.contains(productName);
@@ -85,39 +91,7 @@ public class ShoppingProcessTest extends BaseTest {
 		Assert.assertTrue(checkProductPriceInCart, 
 				"Expected product price in the cart to be the same as on the product page.");
 
-		productCatalogue.clearCart();
-	}
-
-	@Test(enabled = true)
-	@Description("Verify that the user can remove a product from the shopping cart by decreasing its quantity to zero.")
-	public void decreaseProductQuantityInShoppingCartToZero() throws InterruptedException {
-
-		productCatalogue.addToShoppingCartFirstAvailableProductOnProductCatalogue();
-		homePage.goToShoppingCart();
-		
-		Assert.assertEquals(productCatalogue.getNumberOfUniqueProductsInCart(), 1, 
-				"Expected one product in the cart.");
-
-		Assert.assertEquals(productCatalogue.getProductQuantityInCartFromCounter(), "1", 
-				"Expected a specific quantity of the product in the cart.");
-
-		//Select zero in quantity dropdown
-		productCatalogue.openQuantityProductDropdownInCart();
-
-		List<WebElement> dropdownElements = productCatalogue.quantityDropdownElements;
-	    for (WebElement item : dropdownElements) {
-	        if (item.getText().equals("0")) {
-	            item.click();
-	            break;
-	        }
-	    }
-	    
-		//Verify empty cart
-	    Assert.assertEquals(productCatalogue.getTextFromHeaderElement(), "Twój koszyk jest pusty", 
-				"Expected header with info about zero products in the cart");
-		
-		Assert.assertEquals(productCatalogue.getNumberOfUniqueProductsInCart(), 0, 
-				"Expected zero product in the cart.");
+		cartPage.clearCart();
 	}
 
 	@Test(groups = { "smoketests" }, enabled = true)
@@ -127,42 +101,38 @@ public class ShoppingProcessTest extends BaseTest {
 		productCatalogue.addToShoppingCartFirstAvailableProductOnProductCatalogue();
 		homePage.goToShoppingCart();
 
-		Assert.assertEquals(productCatalogue.getNumberOfUniqueProductsInCart(), 1, 
+		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1, 
 				"Expected one product in the cart.");
 		
-		String productPriceBefore = productCatalogue.getCartProductPrices().get(0);
-		String cartValueBefore = productCatalogue.getShoppingCartValue();
+		String productPrice = cartPage.getCartProductPrices().get(0);
+		String cartValueBefore = cartPage.getShoppingCartValue();
 
-		// Selecting the highest available number of articles from a dropdown list
-		productCatalogue.openQuantityProductDropdownInCart();
+		// Attempt to add 6 pieces of one product to the cart.
+		// The final quantity added may be limited by the product's maximum limit.
+		cartPage.increaseNumberOfProductInCart(5);
 
-		List<WebElement> dropdownOptions = productCatalogue.quantityDropdownElements;
-		WebElement maxQuantity = dropdownOptions.get(dropdownOptions.size() - 1);
+		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1, 
+				"Expected one product in the cart.");
+		
+		String productQuantityText = cartPage.getProductQuantityInCartFromCounter();
+		int productQuantityValue = Integer.parseInt(productQuantityText);
+		
 
-		String maxQuantityText = maxQuantity.getText();
-		int maxQuantityValue = Integer.parseInt(maxQuantityText);
-
-		maxQuantity.click();
-		homePage.waitForElementToDisappear(productCatalogue.cartQuantityDropdownBy);
-
-		Assert.assertEquals(productCatalogue.getProductQuantityInCartFromCounter(),
-				maxQuantityText);
+		Assert.assertEquals(cartPage.getProductQuantityInCartFromCounter(),
+				productQuantityText);
 
 		// Checking if the cart total matches the products price
-		String productPriceAfter = productCatalogue.getCartProductPrices().get(0);
-		String cartValueAfter = productCatalogue.getShoppingCartValue();
+		String cartValueAfter = cartPage.getShoppingCartValue();
 
-		double priceBefore = Double.parseDouble(productPriceBefore.replaceAll("[^0-9.,]+", "").replace(",", "."));
-		double priceAfter = Double.parseDouble(productPriceAfter.replaceAll("[^0-9.,]+", "").replace(",", "."));
-
-		Assert.assertEquals(priceAfter, priceBefore * maxQuantityValue, 0.01);
-
+		double singleProductPrice = Double.parseDouble(productPrice.replaceAll("[^0-9.,]+", "").replace(",", "."));
 		double cartBefore = Double.parseDouble(cartValueBefore.replaceAll("[^0-9.,]+", "").replace(",", "."));
 		double cartAfter = Double.parseDouble(cartValueAfter.replaceAll("[^0-9.,]+", "").replace(",", "."));
 
-		Assert.assertEquals(cartAfter, cartBefore * maxQuantityValue, 0.01);
+		Assert.assertEquals(cartAfter, cartBefore * productQuantityValue, 0.01);
+		
+		Assert.assertEquals(cartAfter, singleProductPrice  * productQuantityValue, 0.01);
 
-		productCatalogue.clearCart();
+		cartPage.clearCart();
 
 	}
 

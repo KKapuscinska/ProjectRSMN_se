@@ -18,6 +18,9 @@ WebDriver driver;
 		PageFactory.initElements(driver, this);
 	}
 	
+	
+	//WebElements declarations
+		
 	@FindBy(xpath = "//span[text()='Wyślij wiadomość']")
     WebElement sendContactFormButton;
 	
@@ -50,13 +53,12 @@ WebDriver driver;
 	public By recaptchaBy = By.cssSelector("div[name='recaptcha']");
 	
 	 
-    
+	//Methods related to contactPage
 	
 	public void sendContactForm()
 	{
 		sendContactFormButton.click();
 	}
-	
 	
 	public void fillEmail(String email)
 	{

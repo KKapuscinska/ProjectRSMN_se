@@ -2,24 +2,18 @@
     {
         "username": "automation224@gmail.com",
         "password": "Tester123",
-        "loginPageUrl": "/logowanie",
-        "profilePageUrl": "/profil",
         "description": "Plain user"
     },
 
     {
         "username": "automation224+1@gmail.com",
         "password": "Tester123",
-        "loginPageUrl": "/logowanie",
-        "profilePageUrl": "/profil",
         "description": "favorite products added, purchase history available"
     },
 
     {
         "username": "automation224+2@gmail.com",
         "password": "Tester123",
-        "loginPageUrl": "/logowanie",
-        "profilePageUrl": "/profil",
         "description": "rossne user, rossman club user"
     }
     

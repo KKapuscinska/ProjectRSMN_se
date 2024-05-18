@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-
 import main.java.pageObject.PageObject;
 
 public class LoginPage extends PageObject{
@@ -23,6 +22,9 @@ public class LoginPage extends PageObject{
 		PageFactory.initElements(driver, this);
 	}
 	
+	
+	//WebElements declarations
+	
 	@FindBy(id="login-user")
 	WebElement loginInput;
 	
@@ -34,15 +36,14 @@ public class LoginPage extends PageObject{
 	
 	@FindBy(css=".input-group-text")
 	WebElement showPasswordIcon;
- 
-    
 	
     By loginPopupBy = By.className("login-form");
     public By loginInputBy = By.id("login-user");
     public By passwordInputBy = By.id("login-password");
     public By invaldFeedbackBy = By.cssSelector(".invalid-feedback");
 	
-	
+    //Methods related to LoginPage
+    
 	public void loginByCorrectCredentials(String mail, String password)
 	{
 		loginInput.sendKeys(mail);

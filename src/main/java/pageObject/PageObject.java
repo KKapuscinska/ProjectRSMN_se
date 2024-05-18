@@ -2,7 +2,6 @@ package main.java.pageObject;
 
 import java.time.Duration;
 import java.util.List;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +10,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+
 
 public class PageObject {
 
@@ -68,12 +67,19 @@ public class PageObject {
 		
 	}
 	
+	//Pages
+	public static final String URL_HOME_PAGE = "https://www.rossmann.pl/";
+    public static final String URL_CONTACT_PAGE = "https://www.rossmann.pl/kontakt";
+    public static final String URL_LOGIN_PAGE = "https://www.rossmann.pl/logowanie";
+    public static final String URL_LOGIN_PAGE_RELATIVE = "/logowanie";
+    public static final String URL_PRODUCT_CATALOGUE_PAGE = "https://www.rossmann.pl/szukaj";
+    public static final String URL_CART_RELATIVE = "/zamowienie/koszyk";
+    public static final String URL_PROFILE_RELATIVE = "/profil";
+
+	
 	//WebElements declarations
 	
-	@FindBy(css = ".nav-user-product__btn")
-    WebElement goToCartBtn;
-	
-	@FindBy(css = "a[title='Profil']")
+	@FindBy(xpath = "//a[@title='Profil']")
     WebElement userAccountLink;
 	
 	@FindBy(xpath="//button[text()='Zaloguj się']")
@@ -82,8 +88,12 @@ public class PageObject {
     @FindBy(xpath="//button[text()='Wyloguj się']")
 	WebElement logoutButton;
 
-    @FindBy(css = "a[title='Koszyk']")
+    @FindBy(xpath = "//a[@title='Koszyk']")
    	WebElement shoppingCartLink;
+    
+    @FindBy(xpath="//div[contains(@class, 'StatusBadge-module_badge')]")
+	public
+	WebElement shoppingCartQuantityIcon;
     
 	@FindBy(id = "onetrust-accept-btn-handler")
     WebElement acceptBtnInCookieBar;
@@ -113,39 +123,37 @@ public class PageObject {
 	public
 	List<WebElement> footerLinkList;
 	
-
-	
 	
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");
 	By userAccountDropdownBy = By.xpath("//*[starts-with(@class, 'NavUserButtons-module_dropContent')] /div");
 	By loginPopupBy = By.className("login-form__wrapper");
-	By profileTabElementBy = By.className("profile__nav");
 
 	
 	//Methods related to pages
 	public void goToHomePage() {
-		driver.get("https://www.rossmann.pl/");
+		driver.get(URL_HOME_PAGE);
 	}
 		
 	public void goToContactPage() {
-		driver.get("https://www.rossmann.pl/kontakt");
+		driver.get(URL_CONTACT_PAGE);
 	}
 		
 	public void goToLoginPage() {
-		driver.get("https://www.rossmann.pl/logowanie");
+		driver.get(URL_LOGIN_PAGE);
 	}
 		
 	public void goToProductCataloguePage() {
-		driver.get("https://www.rossmann.pl/szukaj");
+		driver.get(URL_PRODUCT_CATALOGUE_PAGE);
 	}
 		
 	public void goToShoppingCart() throws InterruptedException {
 		shoppingCartLink.click();
-		waitForUrlToContains("/zamowienie/koszyk");
+		waitForUrlToContains(URL_CART_RELATIVE);
 		Thread.sleep(1000);
 	}
 
+	// Methods related to every page
 	public void clickAccountButtonIcon() {
 		userAccountLink.click();
 	 }
@@ -173,7 +181,6 @@ public class PageObject {
 	   waitForElementToDisappear(userAccountDropdownBy);
 	}
 		
-	// Methods related to every page
 	public void acceptCookiesInCookieBar(){
 		waitForElementToAppear(cookieBarBy);
 		waitForElementToBeClicable(acceptBtnInCookieBarBy);

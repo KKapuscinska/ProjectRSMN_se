@@ -43,13 +43,13 @@ public class LoginTest extends BaseTest {
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("profilePageUrl")),
+		Assert.assertTrue(driver.getCurrentUrl().contains(HomePage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("loginPageUrl")),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 	}
 
@@ -59,18 +59,18 @@ public class LoginTest extends BaseTest {
 
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("profilePageUrl")),
+		Assert.assertTrue(driver.getCurrentUrl().contains(HomePage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(formData.get("loginPageUrl")),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 	}
 
@@ -80,7 +80,7 @@ public class LoginTest extends BaseTest {
 
 		homePage.goToLoginPage();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains("/logowanie"),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 
 		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "password", 

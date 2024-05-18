@@ -3,7 +3,6 @@ package main.java.pages;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -11,8 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.testng.Assert;
 
 import main.java.pageObject.PageObject;
 
@@ -31,76 +28,25 @@ public class ProductCatalogue extends PageObject{
 
 	//WebElements declarations
 	
-	//Product Catalogue
-	@FindBy(xpath="//div[starts-with(@data-testid, 'product-tile')]")
+	//ProductCatalogue
+	@FindBy(xpath="//section/div/div/div/section")
 	public
 	List<WebElement> productList;
 	
-	@FindBy(css=".tile-product__name")
-	public
-	List<WebElement> productNameList;
+	public By productListBy = By.xpath("//section/div/div/div/section");
+	By availableToSellProductListBy = By.cssSelector(".nav-user__icon");
+	By theLowestPriceInfoBy = By.xpath("//div[contains(@class, 'tile-product__lowest-price')][2]");
+	By productTitleInSearchPageBy = By.xpath("//a/div/strong");
+	By shoppingCartQuantityIconBy = By.xpath("//div[contains(@class, 'StatusBadge-module_badge')]");
 	
-	@FindBy(css=".h3")
-	public
-	WebElement headerElement;
-	
-	@FindBy(css=".nav-user__quantity")
-	public
-	WebElement shoppingCartQuantityIcon;
-	
-	@FindBy(css=".Toastify__toast-body")
-	public
-	WebElement toastElement;
-	
-	public By productListBy = By.xpath("//div[starts-with(@data-testid, 'product-tile')]");
-	By availableToSellProductListBy = By.cssSelector(".product-list__col--thirds .nav-user__icon");
-	public By shoppingCartIconOnProductBy = By.cssSelector(".tile-product__add-list-plus");
-	public By productNameVisibleInProductCatalogueBy = By.cssSelector(".tile-product__name strong");
-	By theLowestPriceInfoBy = By.cssSelector(".tile-product__lowest-price");
-	By productTitleInSearchPageBy = By.cssSelector(".tile-product__name strong");
-	By shoppingCartDropdownBy = By.id("dropdown-mini_basket");
-	By shoppingCartQuantityIconBy = By.cssSelector(".nav-user__quantity");
-	
-	//Product Page
-	@FindBy(css = ".product-info__name > h1.h1")
+	//ProductPage
+	@FindBy(xpath = "//h1[contains(@class, 'styles-module_titleBrand')]")
 	public
     WebElement productPageNameElement;
 	
 	@FindBy(css = ".product-price .h2")
 	public
     WebElement productPagePriceElement;
-	
-	
-	//ShoppingCart
-	@FindBy(className="cart-product")
-	public
-	List<WebElement> cartProductsList;
-	
-	@FindBy(css = ".cart-product__name")
-	public
-    WebElement cartProductNameElement;
-	
-	@FindBy(css = ".price-details__value-total")
-	public
-    WebElement cartTotalValue;
-	
-	@FindBy(css = ".sri-select__selected")
-	public
-    WebElement quantityOfProductInCart;
-	
-	@FindBy(css = ".cart-product__quantity")
-	public
-    WebElement quantityDropdownElement;
-	
-	@FindBy(css = ".sri-select__item")
-	public
-	List<WebElement> quantityDropdownElements;
-	
-	By RemoveBtnBy = By.cssSelector(".btn-del");
-	By cartProductNameBy = By.cssSelector(".cart-product__name strong");
-	By cartProductPriceBy = By.cssSelector(".cart-product__price");
-	By cartProductListBy = By.cssSelector(".cart-product");
-	public By cartQuantityDropdownBy = By.cssSelector(".sri-select__items-container");
 	
 	//Recommendations filters
 	@FindBy(css = "button[data-testid='recommended-select-open-btn']")
@@ -128,8 +74,7 @@ public class ProductCatalogue extends PageObject{
 	
 	By closeButtonOnFeelAtmosphereFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-feelAtmosphere']");
 	By feelAtmosphereChipBy = By.cssSelector("button[data-testid='filters-chip-feelAtmosphere']");
-	By feelAtmosphereLabelBy = By.xpath("//a[@aria-label='Czujesz Klimat']");
-	
+	By feelAtmosphereLabelBy = By.xpath("//span[@data-testid='feel-atmosphere-badge']");
 
 	//Promotions filters
 	@FindBy(css = "button[data-testid='promotions-select-open-btn']")
@@ -157,8 +102,7 @@ public class ProductCatalogue extends PageObject{
 	
 	By closeButtonOnMegaFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-mega']");
 	By megaChipBy = By.cssSelector("button[data-testid='filters-chip-mega']");
-	
-	public String badgeSelectorMega = ".tile-product__badge.mega";
+	public String badgeSelectorMegaXPath = "//span[contains(text(),'MEGA!')]";
 	
 	//PromotionFilter
 	@FindBy(css = "input[data-testid='brands-select-checkbox-promotion'] + span.checkbox")
@@ -175,7 +119,6 @@ public class ProductCatalogue extends PageObject{
 	
 	By closeButtonOnPromotionFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-promotion']");
 	By promotionChipBy = By.cssSelector("button[data-testid='filters-chip-promotion']");
-	
 	
 	//Methods related to filtering
 	
@@ -206,6 +149,7 @@ public class ProductCatalogue extends PageObject{
 		scrollToTopOfPage();
 		waitForElementToBeClicable(closeButtonOnFeelAtmosphereFilterLabelBy);
 		closeButtonOnFeelAtmosphereFilterLabel.click();
+		Thread.sleep(1000);
 	}
 	
 	public boolean isFeelAtmosphereChipVisibleOnProductCatalogue() {
@@ -249,6 +193,7 @@ public class ProductCatalogue extends PageObject{
 		scrollToTopOfPage();
 		waitForElementToBeClicable(closeButtonOnMegaFilterLabelBy);
 		closeButtonOnMegaFilterLabel.click();
+		Thread.sleep(1000);
 	}
 	
 	public boolean isMegaChipVisibleOnProductCatalogue() {
@@ -272,6 +217,7 @@ public class ProductCatalogue extends PageObject{
 		scrollToTopOfPage();
 		waitForElementToBeClicable(closeButtonOnPromotionFilterLabelBy);
 		closeButtonOnPromotionFilterLabel.click();
+		Thread.sleep(1000);
 	}
 	
 	public boolean isPromotionChipVisibleOnProductCatalogue() {
@@ -280,7 +226,6 @@ public class ProductCatalogue extends PageObject{
 	}
 
 	//Methods related to products
-
 	public List<WebElement> getProductList() {
         return driver.findElements(productListBy);
     }
@@ -289,15 +234,11 @@ public class ProductCatalogue extends PageObject{
         return driver.findElements(availableToSellProductListBy);
     }
 	
-	public List<WebElement> getShoppingCartIconList() {
-        return driver.findElements(shoppingCartIconOnProductBy);
-    }
-	
 	public void clickToRandomProductOnPage() {
 		
 		Random random = new Random();
-        int randomIndex = random.nextInt(productNameList.size());
-        WebElement randomProduct = productNameList.get(randomIndex);
+        int randomIndex = random.nextInt(productList.size());
+        WebElement randomProduct = productList.get(randomIndex);
         randomProduct.click();
 	}
 	
@@ -327,11 +268,11 @@ public class ProductCatalogue extends PageObject{
         return productsWithoutTheLowestPriceInfo;
     }
 	
-	public List<String> getProductsMissingBadge(String badgeSelector) {
+	public List<String> getProductsMissingBadge(String badgeSelectorXPath) {
         List<String> productsWithoutBadge = new ArrayList<>();
 
         for (WebElement product : productList) {
-            if (product.findElements(By.cssSelector(badgeSelector)).isEmpty()) {
+            if (product.findElements(By.xpath(badgeSelectorXPath)).isEmpty()) {
                 productsWithoutBadge.add(product.findElement(productTitleInSearchPageBy).getText());
             }
         }
@@ -339,65 +280,10 @@ public class ProductCatalogue extends PageObject{
         return productsWithoutBadge;
     }
 	
-	//Methods related to shopping cart
-	
-	public void clickRemoveButtonInCartForAllProducts() {
-	    List<WebElement> removeButtons = driver.findElements(RemoveBtnBy);
-	    for (WebElement button : removeButtons) {
-	        button.click();
-	    }
-	    waitForElementToPresentNumberOfElements(cartProductListBy, 0);
-	 }
-		
-	public void clearCart() throws InterruptedException {
-		goToShoppingCart();
-		clickRemoveButtonInCartForAllProducts();
-	}
-		
-	public String getTextFromHeaderElement() {
-	    return headerElement.getText();
-	}
-	
-	
-	public List<String> getCartProductNames() {
-	    List<String> productNames = new ArrayList<>();
-	    List<WebElement> cartProductElements = driver.findElements(cartProductNameBy);
-	    for (WebElement cartProductElement : cartProductElements) {
-	        productNames.add(cartProductElement.getText());
-	    }
-	    return productNames;
-	}
-	
-	public List<String> getCartProductPrices() {
-	    List<String> productPrices = new ArrayList<>();
-	    List<WebElement> cartProductPriceElements = driver.findElements(cartProductPriceBy);
-	    for (WebElement cartProductPriceElement : cartProductPriceElements) {
-	        productPrices.add(cartProductPriceElement.getText());
-	    }
-	    return productPrices;
-	}
-	
-	public String getShoppingCartValue() {
-		String cartValue = cartTotalValue.getText();
-		return cartValue;
-	}
 
-	public String getProductQuantityInCartFromCounter() {
-		return quantityOfProductInCart.getText();
-	}
 	
-	public String getProductQuantityInCartFromIcon() {
-		return shoppingCartQuantityIcon.getText();
-	}
-	
-	public int getNumberOfUniqueProductsInCart() {
-		return cartProductsList.size();
-	}
-	
-	public void openQuantityProductDropdownInCart() {
-		waitForElementToAppear(cartProductListBy);
-		quantityDropdownElement.click();
-		waitForElementToAppear(cartQuantityDropdownBy);
-	}
-
 }
+	
+
+
+

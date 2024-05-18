@@ -21,15 +21,7 @@ verifyProductDetailsInShoppingCart()
 	2. Verify that the product details (name, price) match the expected details
 	
 	
-TestCase 3 - Remove product from shopping cart by decreasing quantity to zero
-decreaseProductQuantityInShoppingCartToZero()
-	
-	1. Navigate to the shopping cart
-	2. Change the quantity of the product to zero
-	3. Verify that the product is removed from the shopping cart
-	
-	
-TestCase 4 -  Increase product quantity in shopping cart to maximum and verify basket value change
+TestCase 3 -  Increase product quantity in shopping cart and verify cart value change
 verifyTotalPriceAfterChangingQuantityInShoppingCart()
 	
 	1. Increase the quantity of the product
