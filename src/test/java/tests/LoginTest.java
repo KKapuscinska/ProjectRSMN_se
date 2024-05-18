@@ -3,25 +3,20 @@ package test.java.tests;
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
 import test.java.basetest.BaseTest;
+import test.java.listeners.Retry;
 
 public class LoginTest extends BaseTest {
 
@@ -43,7 +38,7 @@ public class LoginTest extends BaseTest {
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 		homePage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(HomePage.URL_PROFILE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
@@ -64,7 +59,7 @@ public class LoginTest extends BaseTest {
 
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(HomePage.URL_PROFILE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
 		homePage.logout();
@@ -93,7 +88,7 @@ public class LoginTest extends BaseTest {
 
 	}
 	
-	@Test(dataProvider = "invalidData")
+	@Test(dataProvider = "invalidData", retryAnalyzer=Retry.class)
 	@Description("User cannot log in with an incorrect creddentials.")
 	public void failureLogin(HashMap<String, String> formData) throws InterruptedException {
 

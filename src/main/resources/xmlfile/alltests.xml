@@ -3,7 +3,11 @@
 
 <suite parallel="tests" name="alltests">
 	
+<listeners>
+	<listener class-name="test.java.listeners.Listeners"/>
 	
+</listeners>
+
 	<test name="BrokenLinks">
         <classes>
             <class name="test.java.tests.BrokenLinksTest"/>
