@@ -1,9 +1,15 @@
-package main.java.pageObject;
+package main.java.pageobject;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -71,10 +77,10 @@ public class PageObject {
 	public static final String URL_HOME_PAGE = "https://www.rossmann.pl/";
     public static final String URL_CONTACT_PAGE = "https://www.rossmann.pl/kontakt";
     public static final String URL_LOGIN_PAGE = "https://www.rossmann.pl/logowanie";
-    public static final String URL_LOGIN_PAGE_RELATIVE = "/logowanie";
+    public final String URL_LOGIN_PAGE_RELATIVE = "/logowanie";
     public static final String URL_PRODUCT_CATALOGUE_PAGE = "https://www.rossmann.pl/szukaj";
-    public static final String URL_CART_RELATIVE = "/zamowienie/koszyk";
-    public static final String URL_PROFILE_RELATIVE = "/profil";
+    public final String URL_CART_RELATIVE = "/zamowienie/koszyk";
+    public final String URL_PROFILE_RELATIVE = "/profil";
 
 	
 	//WebElements declarations
@@ -201,7 +207,7 @@ public class PageObject {
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 	}
-
+	
 	
 	
 }

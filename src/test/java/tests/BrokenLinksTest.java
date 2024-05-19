@@ -12,7 +12,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.asserts.SoftAssert;
 import jdk.jfr.Description;
-import main.java.pageObject.PageObject;
+import main.java.pageobject.PageObject;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
@@ -202,7 +202,7 @@ public class BrokenLinksTest extends BaseTest{
 	@DataProvider
 	public Object[][] getLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\ValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\ValidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 

@@ -108,7 +108,7 @@ public class LoginTest extends BaseTest {
 	@DataProvider(name = "validData")
 	public Object[][] getValidData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\ValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\ValidData.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
@@ -116,7 +116,7 @@ public class LoginTest extends BaseTest {
 	@DataProvider(name = "invalidData")
 	public Object[][] getInvalidData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\java\\data\\LoginData\\InvalidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\InvalidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}, {data.get(3)}};
 	}
 }
