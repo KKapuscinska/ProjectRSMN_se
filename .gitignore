@@ -37,3 +37,6 @@ target/
 .classpath
 .mvn/
 **/target/
+
+### Test Output ###
+test-output/
