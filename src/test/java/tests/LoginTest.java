@@ -2,16 +2,14 @@ package test.java.tests;
 
 
 import static org.openqa.selenium.support.locators.RelativeLocator.with;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
@@ -23,14 +21,14 @@ public class LoginTest extends BaseTest {
 	HomePage homePage;
 	LoginPage loginPage;
 	
-	@BeforeTest
+	@BeforeClass(alwaysRun = true)
     public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
     }
 	
 	
-	@Test(dataProvider = "validData")
+	@Test(dataProvider = "validData", groups="smoke")
 	@Description("User can successfully log in and log out via a popup login window.")
 	public void successfulLoginViaPopup(HashMap<String, String> formData) throws InterruptedException, IOException {
 
@@ -49,7 +47,7 @@ public class LoginTest extends BaseTest {
 				"Expected current URL to be login page.");
 	}
 
-	@Test(dataProvider = "validData")
+	@Test(dataProvider = "validData", groups="smoke")
 	@Description("User can successfully log in and log out via the login page.")
 	public void successfulLoginViaPage(HashMap<String, String> formData) throws InterruptedException {
 

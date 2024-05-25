@@ -5,18 +5,13 @@ import main.java.pages.CartPage;
 import main.java.pages.HomePage;
 import main.java.pages.ProductCatalogue;
 import test.java.basetest.BaseTest;
-
 import java.io.IOException;
-import java.time.Duration;
 import java.util.List;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class ShoppingProcessTest extends BaseTest {
@@ -25,7 +20,7 @@ public class ShoppingProcessTest extends BaseTest {
 	ProductCatalogue productCatalogue;
 	CartPage cartPage;
 	
-	@BeforeTest(alwaysRun = true)
+	@BeforeClass(alwaysRun = true)
 	public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);
@@ -38,7 +33,7 @@ public class ShoppingProcessTest extends BaseTest {
 		homePage.goToProductCataloguePage();
 	}
  
-	@Test(enabled = true)
+	@Test(groups="smoke")
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
 	public void addAndRemoveProductFromShoppingCart() throws InterruptedException {
 		
@@ -61,7 +56,7 @@ public class ShoppingProcessTest extends BaseTest {
 				"Expected zero products in the cart.");
 	}
 	
-	@Test(enabled = true)
+	@Test(groups="smoke")
 	@Description("Verify that the correct product details are displayed in the shopping cart after adding it.")
 	public void verifyProductDetailsInShoppingCart() throws InterruptedException {
 		
@@ -94,7 +89,7 @@ public class ShoppingProcessTest extends BaseTest {
 		cartPage.clearCart();
 	}
 
-	@Test(enabled = true)
+	@Test(groups="smoke")
 	@Description("Verify that the total price is updated correctly after changing the quantity of products in the shopping cart.")
 	public void verifyTotalPriceAfterChangingQuantityInShoppingCart() throws InterruptedException {
 
