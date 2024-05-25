@@ -2,16 +2,14 @@ package test.java.tests;
 
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
-
 import main.java.pages.ProductCatalogue;
 import test.java.basetest.BaseTest;
-
 import java.io.IOException;
 import java.util.List;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 public class ProductFilterTest extends BaseTest {
@@ -19,7 +17,7 @@ public class ProductFilterTest extends BaseTest {
 	HomePage homePage;
 	ProductCatalogue productCatalogue;
 	
-	@BeforeTest
+	@BeforeClass
 	public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);

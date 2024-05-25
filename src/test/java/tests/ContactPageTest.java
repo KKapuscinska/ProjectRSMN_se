@@ -4,17 +4,14 @@ package test.java.tests;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import static org.openqa.selenium.support.locators.RelativeLocator.*;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
 import jdk.jfr.Description;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
 import test.java.basetest.BaseTest;
-
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -23,7 +20,7 @@ public class ContactPageTest extends BaseTest{
 	ContactPage contactPage;
 	HomePage homePage;
 	
-	@BeforeTest
+	@BeforeClass
     public void setup() throws IOException {
 		contactPage = PageFactory.initElements(driver, ContactPage.class);
 		homePage = PageFactory.initElements(driver, HomePage.class);
