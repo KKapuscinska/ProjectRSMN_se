@@ -29,6 +29,7 @@ public class LoginTest extends BaseTest {
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
     }
 	
+	
 	@Test(dataProvider = "validData")
 	@Description("User can successfully log in and log out via a popup login window.")
 	public void successfulLoginViaPopup(HashMap<String, String> formData) throws InterruptedException, IOException {
@@ -48,7 +49,7 @@ public class LoginTest extends BaseTest {
 				"Expected current URL to be login page.");
 	}
 
-	@Test(dataProvider = "validData", groups = { "smoketests" })
+	@Test(dataProvider = "validData")
 	@Description("User can successfully log in and log out via the login page.")
 	public void successfulLoginViaPage(HashMap<String, String> formData) throws InterruptedException {
 

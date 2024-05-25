@@ -25,7 +25,7 @@ public class ShoppingProcessTest extends BaseTest {
 	ProductCatalogue productCatalogue;
 	CartPage cartPage;
 	
-	@BeforeTest(groups = { "smoketests" })
+	@BeforeTest(alwaysRun = true)
 	public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);
@@ -33,12 +33,12 @@ public class ShoppingProcessTest extends BaseTest {
 		homePage.acceptCookiesInCookieBar();
 	}
 
-	@BeforeMethod(groups = { "smoketests" })
+	@BeforeMethod(alwaysRun = true)
 	public void beforeTest() {
 		homePage.goToProductCataloguePage();
 	}
  
-	@Test(groups = { "smoketests" }, enabled = true)
+	@Test(enabled = true)
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
 	public void addAndRemoveProductFromShoppingCart() throws InterruptedException {
 		
@@ -61,7 +61,7 @@ public class ShoppingProcessTest extends BaseTest {
 				"Expected zero products in the cart.");
 	}
 	
-	@Test(groups = { "smoketests" }, enabled = true)
+	@Test(enabled = true)
 	@Description("Verify that the correct product details are displayed in the shopping cart after adding it.")
 	public void verifyProductDetailsInShoppingCart() throws InterruptedException {
 		
@@ -94,7 +94,7 @@ public class ShoppingProcessTest extends BaseTest {
 		cartPage.clearCart();
 	}
 
-	@Test(groups = { "smoketests" }, enabled = true)
+	@Test(enabled = true)
 	@Description("Verify that the total price is updated correctly after changing the quantity of products in the shopping cart.")
 	public void verifyTotalPriceAfterChangingQuantityInShoppingCart() throws InterruptedException {
 

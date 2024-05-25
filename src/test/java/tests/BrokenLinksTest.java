@@ -12,8 +12,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.asserts.SoftAssert;
 import jdk.jfr.Description;
-import main.java.pageobject.PageObject;
-import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
 import main.java.pages.ProfilePage;
@@ -29,7 +27,7 @@ public class BrokenLinksTest extends BaseTest{
 	LoginPage loginPage;
 	ProfilePage profilePage;
 	
-	@BeforeTest
+	@BeforeTest(alwaysRun = true)
     public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
@@ -37,7 +35,7 @@ public class BrokenLinksTest extends BaseTest{
     }
 	
 	
-	@Test(dataProvider="getLoginData", groups = {"smoketests"})
+	@Test(dataProvider="getLoginData")
 	@Description("Check functionality of profile tab links.")
 	public void checkProfileTabLinks(HashMap<String, String> input) throws MalformedURLException, IOException, InterruptedException {
 		
@@ -68,7 +66,7 @@ public class BrokenLinksTest extends BaseTest{
 		loginPage.logout();
 	}
 
-	@Test(groups = {"smoketests"})
+	@Test
 	@Description("Check functionality of user buttons - profile, favorite products and shopping cart.")
 	public void checkUserButtonsLinks() throws MalformedURLException, IOException, InterruptedException {
 		
@@ -107,7 +105,7 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 	}
 	
-	@Test(groups = {"smoketests"})
+	@Test
 	@Description("Check functionality of top bar category, Promotions and newspaper links.")
 	public void checkCategoryLinks() throws MalformedURLException, IOException, InterruptedException {
 			
@@ -130,7 +128,7 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 	}	
 
-	@Test(groups = {"smoketests"})
+	@Test
 	@Description("Check functionality of top bar products capsule links.")
 	public void checkCapsuleLinks() throws MalformedURLException, IOException, InterruptedException {
 			
@@ -153,7 +151,7 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 	}
 	
-	@Test(groups = {"smoketests"})
+	@Test
 	@Description("Check functionality of top bar Campain links.")
 	public void checkCampainLinks() throws MalformedURLException, IOException, InterruptedException {
 			
@@ -176,7 +174,7 @@ public class BrokenLinksTest extends BaseTest{
 		a.assertAll();
 	}	
 	
-	@Test(groups = {"smoketests"})
+	@Test
 	@Description("Check functionality of footer links.")
 	public void checkFooterLinks() throws MalformedURLException, IOException, InterruptedException {
 		
