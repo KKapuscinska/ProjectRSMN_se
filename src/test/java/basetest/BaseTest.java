@@ -9,10 +9,12 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
@@ -27,17 +29,25 @@ public class BaseTest {
 
 	public WebDriver driver;
 	
+	
 	public WebDriver initializeDriver() throws IOException {
 		
 		Properties prop = new Properties();
 		FileInputStream file = new FileInputStream(System.getProperty("user.dir")+"\\src\\main\\resources\\globalData.properties");
 		prop.load(file);
-		String browserName = prop.getProperty("browser");
+		String browserName = System.getProperty("browser")!=null ? System.getProperty("browser") : prop.getProperty("browser");
 		
-		if(browserName.equalsIgnoreCase("chrome"))
+		if(browserName.contains("chrome"))
 		{
+			ChromeOptions options = new ChromeOptions();
+			
 			WebDriverManager.chromedriver().setup();
-			driver = new ChromeDriver();
+			if(browserName.contains("headless"))
+			{
+			options.addArguments("headless");
+			}
+			driver = new ChromeDriver(options);
+			driver.manage().window().setSize(new Dimension(1440,900));
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
@@ -71,7 +81,7 @@ public class BaseTest {
 		return System.getProperty("user.dir") + "\\reports\\" + testCaseName + ".png";
 	}	
 	
-	@BeforeTest
+	@BeforeTest(alwaysRun = true)
 	public HomePage launchApplication() throws IOException {
 		
 		driver = initializeDriver();
@@ -81,7 +91,7 @@ public class BaseTest {
 		return homePage;
 	}
 	
-	@AfterTest
+	@AfterTest(alwaysRun = true)
 	public void quitDriver() {
         if (driver != null) {
             driver.quit();
