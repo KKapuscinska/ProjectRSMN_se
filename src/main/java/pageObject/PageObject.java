@@ -81,6 +81,7 @@ public class PageObject {
     public static final String URL_PRODUCT_CATALOGUE_PAGE = "https://www.rossmann.pl/szukaj";
     public final String URL_CART_RELATIVE = "/zamowienie/koszyk";
     public final String URL_PROFILE_RELATIVE = "/profil";
+    public final String URL_PROFILE_PURCHASE_RELATIVE = "/profil/zamowienia";
 
 	
 	//WebElements declarations
@@ -208,6 +209,9 @@ public class PageObject {
 	    js.executeScript("window.scrollTo(0, document.body.scrollHeight);");
 	}
 	
-	
+	public void scrollToElementCenter(WebElement element) {
+	    JavascriptExecutor js = (JavascriptExecutor) driver;
+	    js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+	}
 	
 }

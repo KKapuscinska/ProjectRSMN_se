@@ -25,10 +25,19 @@ public class ProfilePage extends PageObject{
 		
 	//WebElements declarations
 		
-	@FindBy(xpath="//*[@id=\"__next\"]/div/section/div/div/div/nav/a")
+	@FindBy(xpath="//section/div/div/div/nav/a")
 	public
 	List<WebElement> profileLinkList;
 	
+	@FindBy(xpath="//section/div/div/div/nav/a[1]")
+	public
+	WebElement purchaseHistoryTab;
 	
 	
+	//Methods related to Account
+	
+	public void goToPurchaseHistoryTab() {
+		purchaseHistoryTab.click();
+		waitForUrlToContains(URL_PROFILE_PURCHASE_RELATIVE);
+	}
 }
