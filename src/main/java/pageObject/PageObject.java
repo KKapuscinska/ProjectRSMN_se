@@ -1,21 +1,17 @@
 package main.java.pageobject;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
 
 
 public class PageObject {
@@ -37,10 +33,10 @@ public class PageObject {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(findBy));
 	}
 	
-	public WebElement waitForElementToAppearWebElement(By findBy)
+	public WebElement waitForElementToAppearWebElement(WebElement element)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-		return wait.until(ExpectedConditions.visibilityOfElementLocated(findBy));
+		return wait.until(ExpectedConditions.visibilityOf(element));
 	}
 	
 	public void waitForElementToDisappear(By findBy)
@@ -48,17 +44,35 @@ public class PageObject {
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 		wait.until(ExpectedConditions.invisibilityOfElementLocated(findBy));
 	}
+
+	public void waitForElementToDisappearWebElement(WebElement element)
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+		wait.until(ExpectedConditions.invisibilityOf(element));
+	}
 	
-	public void waitForElementToBeClicable(By findBy)
+	public void waitForElementToBeClickable(By findBy)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 		wait.until(ExpectedConditions.elementToBeClickable(findBy));
+	}
+
+	public void waitForElementToBeClickableWebElement(WebElement element)
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		wait.until(ExpectedConditions.elementToBeClickable(element));
 	}
 	
 	public void waitForElementToPresentValue(By findBy, String Text)
 	{
 		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
 		wait.until(ExpectedConditions.textToBePresentInElementValue(findBy, Text));
+	}
+
+	public void waitForElementToPresentValueWebElement(WebElement element, String Text)
+	{
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(7));
+		wait.until(ExpectedConditions.textToBePresentInElementValue(element, Text));
 	}
 	
 	public void waitForUrlToContains(String Text) {
@@ -81,8 +95,10 @@ public class PageObject {
     public static final String URL_PRODUCT_CATALOGUE_PAGE = "https://www.rossmann.pl/szukaj";
     public final String URL_CART_RELATIVE = "/zamowienie/koszyk";
     public final String URL_PROFILE_RELATIVE = "/profil";
+    public final String URL_PRODUCTS_RELATIVE = "/produkty";
     public final String URL_PROFILE_PURCHASE_RELATIVE = "/profil/zamowienia";
-
+    public final String URL_FAVORITES_RELATIVE = "/profil/ulubione";
+	public final String URL_CHECKOUT_RELATIVE = "/zamowienie/kasa";
 	
 	//WebElements declarations
 	
@@ -97,14 +113,15 @@ public class PageObject {
 
     @FindBy(xpath = "//a[@title='Koszyk']")
    	WebElement shoppingCartLink;
-    
-    @FindBy(xpath="//div[contains(@class, 'StatusBadge-module_badge')]")
+
+	@FindBy(xpath="//div[3]/a/div[contains(@class, 'StatusBadge-module_badge')]")
 	public
 	WebElement shoppingCartQuantityIcon;
-    
+
 	@FindBy(id = "onetrust-accept-btn-handler")
     WebElement acceptBtnInCookieBar;
-	
+
+
 	//Link lists
 	@FindBy(xpath="//*[@id=\"header\"]/section/section/div[2]/div[starts-with(@class, 'NavUserButtons-module_btnWithDropdown')]/a")
 	public
@@ -134,8 +151,16 @@ public class PageObject {
 	By cookieBarBy = By.cssSelector(".ot-sdk-container");
 	By acceptBtnInCookieBarBy = By.id("onetrust-accept-btn-handler");
 	By userAccountDropdownBy = By.xpath("//*[starts-with(@class, 'NavUserButtons-module_dropContent')] /div");
-	By loginPopupBy = By.className("login-form__wrapper");
+	public By loginPopupBy = By.className("login-form");
 
+	public By shoppingCartQuantityIconBy = By.xpath("//div[contains(@class, 'StatusBadge-module_badge')]");
+
+	//aletr popups
+	@FindBy(xpath="//div[@class='Toastify__toast-body']")
+	public
+	WebElement alertPopupBody;
+	By alertPopupBodyBy = By.xpath("//div[@class='Toastify__toast-body']");
+	public String favoriteProductAddedPopupMessage = "Dodano produkt do Ulubionych";
 	
 	//Methods related to pages
 	public void goToHomePage() {
@@ -154,10 +179,9 @@ public class PageObject {
 		driver.get(URL_PRODUCT_CATALOGUE_PAGE);
 	}
 		
-	public void goToShoppingCart() throws InterruptedException {
+	public void goToShoppingCart() {
 		shoppingCartLink.click();
 		waitForUrlToContains(URL_CART_RELATIVE);
-		Thread.sleep(1000);
 	}
 
 	// Methods related to every page
@@ -185,20 +209,21 @@ public class PageObject {
 	        e.printStackTrace();
 	   }
 	   logoutButton.click(); 
-	   waitForElementToDisappear(userAccountDropdownBy);
+	   waitForElementToDisappearWebElement(logoutButton);
 	}
 		
 	public void acceptCookiesInCookieBar(){
 		waitForElementToAppear(cookieBarBy);
-		waitForElementToBeClicable(acceptBtnInCookieBarBy);
+		waitForElementToBeClickableWebElement(acceptBtnInCookieBar);
 		acceptBtnInCookieBar.click();
-		waitForElementToDisappear(cookieBarBy);	
+		waitForElementToDisappear(cookieBarBy);
 	}
 	
-	public void maximizePage() {
-		driver.manage().window().maximize();
+	public String checkAlertPopupMessage(){
+		waitForElementToAppear(alertPopupBodyBy);
+		return alertPopupBody.getText();
 	}
-	
+
 	public void scrollToTopOfPage() {
 		JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollTo(0, 0);");
@@ -212,6 +237,10 @@ public class PageObject {
 	public void scrollToElementCenter(WebElement element) {
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 	    js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+		waitForElementToAppearWebElement(element);
 	}
-	
+
+	public String getProductQuantityFromIcon() {
+		return shoppingCartQuantityIcon.getText();
+	}
 }

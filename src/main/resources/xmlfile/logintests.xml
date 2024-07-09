@@ -5,6 +5,10 @@
 	
 	<parameter name="" value=""></parameter>
 	
+	<listeners>
+		<listener class-name="test.java.listeners.Listeners"/>
+	</listeners>
+	
   <test verbose="1" name="logintests">
     <classes>
       

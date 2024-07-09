@@ -32,6 +32,12 @@
         </classes>
     </test>
 
+    <test name="ProfileTest">
+        <classes>
+            <class name="test.java.tests.ProfileTest"/>
+        </classes>
+    </test>
+
     <test name="ShoppingProcessTest">
         <classes>
             <class name="test.java.tests.ShoppingProcessTest"/>

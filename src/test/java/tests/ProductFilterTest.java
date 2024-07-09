@@ -34,7 +34,6 @@ public class ProductFilterTest extends BaseTest {
 	@Description("Verify that selecting the 'Feel Atmosphere' filter working correctly.")
 	public void verifyFeelAtmosphereFilter() throws InterruptedException {
 
-		Thread.sleep(1000);
 		productCatalogue.selectFeelAtmosphereFilter();
 		
 		boolean isFeelAtmosphereChipVisible = productCatalogue.isFeelAtmosphereChipVisibleOnProductCatalogue();

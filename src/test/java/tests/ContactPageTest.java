@@ -14,6 +14,7 @@ import test.java.basetest.BaseTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import test.java.listeners.Retry;
 
 public class ContactPageTest extends BaseTest{
 
@@ -22,13 +23,13 @@ public class ContactPageTest extends BaseTest{
 	
 	@BeforeClass
     public void setup() throws IOException {
-		contactPage = PageFactory.initElements(driver, ContactPage.class);
 		homePage = PageFactory.initElements(driver, HomePage.class);
+		contactPage = PageFactory.initElements(driver, ContactPage.class);
 		homePage.goToContactPage();
 		homePage.acceptCookiesInCookieBar();
     }
 	
-	@Test(dataProvider = "invalidNameData")
+	@Test(dataProvider = "invalidNameData", retryAnalyzer= Retry.class)
 	@Description("Verify name fields validation.")
 	public void contactFormValidationName(HashMap<String, String> formData) {
 			
@@ -50,7 +51,7 @@ public class ContactPageTest extends BaseTest{
 		        "Expected specific validation message for the email field.");
 	}
 		
-	@Test(dataProvider = "invalidEmailData")
+	@Test(dataProvider = "invalidEmailData", retryAnalyzer= Retry.class)
 	@Description("Verify email field validation.")
 	public void contactFormValidationEmail(HashMap<String, String> formData) {
 		

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="shoppingprocesstests">
+
+    <parameter name="" value=""></parameter>
+
+    <listeners>
+        <listener class-name="test.java.listeners.Listeners"/>
+    </listeners>
+
+    <test verbose="1" name="shoppingprocesstests">
+        <classes>
+
+            <class name="test.java.tests.ShoppingProcessTest"/>
+
+        </classes>
+    </test>
+</suite>

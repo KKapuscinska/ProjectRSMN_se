@@ -26,39 +26,41 @@ public class LoginPage extends PageObject{
 	
 	//WebElements declarations
 	
-	@FindBy(id="login-user")
+	@FindBy(xpath = "//*[@name='login']")
 	WebElement loginInput;
 	
-	@FindBy(id="login-password")
+	@FindBy(xpath = "//*[@name='password']")
 	WebElement passwordInput;
 	
-	@FindBy(xpath="//span[text()='Zaloguj się']")
+	@FindBy(xpath="//button[@type='submit'][contains(text(),'Zaloguj się')][1]")
 	WebElement loginButton;
 	
-	@FindBy(css=".input-group-text")
+	@FindBy(xpath="//*[@name='password']/following-sibling::button")
 	WebElement showPasswordIcon;
 	
-    By loginPopupBy = By.className("login-form");
-    public By loginInputBy = By.id("login-user");
-    public By passwordInputBy = By.id("login-password");
-    public By invaldFeedbackBy = By.cssSelector(".invalid-feedback");
+
+	By loginButtonBy = By.xpath("//button[@type='submit'][contains(text(),'Zaloguj się')][1]");
+    public By loginInputBy = By.xpath("//*[@name='login']");
+    public By passwordInputBy = By.xpath("//*[@name='password']");
+    public By invaldFeedbackBy = By.xpath("//div[contains(@class, 'Notification-module_label')][1]");
 	
     //Methods related to LoginPage
     
 	public void loginByCorrectCredentials(String mail, String password)
 	{
+		waitForElementToAppearWebElement(loginInput);
 		loginInput.sendKeys(mail);
 		passwordInput.sendKeys(password);
 		loginButton.click();
-		waitForElementToDisappear(loginPopupBy);
+		waitForElementToDisappearWebElement(loginButton);
 	}
 	
-	public void logInByIncorrectCredentials(String mail, String password) throws InterruptedException
+	public void logInByIncorrectCredentials(String mail, String password)
 	{
 		loginInput.sendKeys(mail);
 		passwordInput.sendKeys(password);
 		loginButton.click();
-		Thread.sleep(1000);
+		waitForElementToAppear(invaldFeedbackBy);
 	}
 	
 	public void clickShowPasswordIcon() throws InterruptedException
@@ -71,8 +73,8 @@ public class LoginPage extends PageObject{
 	{
 		loginInput.clear();
 		passwordInput.clear();
-		waitForElementToPresentValue(loginInputBy, "");
-		waitForElementToPresentValue(passwordInputBy, "");
+		waitForElementToPresentValueWebElement(loginInput, "");
+		waitForElementToPresentValueWebElement(passwordInput, "");
 	}
 }
  

@@ -30,53 +30,66 @@ public class CartPage extends PageObject{
 	
 	@FindBy(xpath="//li[contains(@class, 'styles-module_listItem')]")
 	public
-	List<WebElement> cartProductsList;
+	List<WebElement> productsList;
 		
 	@FindBy(xpath = "//span[contains(@class, 'styles-module_brand')]")
 	public
-    WebElement cartProductNameElement;
+    WebElement productNameElement;
 		
 	@FindBy(xpath = "//span[2][contains(@class, 'styles-module_totalAmount')]")
 	public
-    WebElement cartTotalValue;
-		
+    WebElement totalValue;
+
 	@FindBy(xpath = "//input[contains(@data-testid, 'input')]")
 	public
-    WebElement selectedQuantityOfProductInCart;
+    WebElement selectedQuantityOfProduct;
 	
-	@FindBy(css=".h3")
+	@FindBy(xpath="//div[@class='h3 pb-3']")
 	public
-	WebElement headerElement;
-		
+	WebElement emptyCartHeader;
+
+	@FindBy(xpath="//div[contains(@class,'summaryContainer')]/div/button")
+	public
+	WebElement summaryBtn;
+
+	@FindBy(xpath = "//div[@class='login-form__bypass']/a")
+	public
+	WebElement buyWithoutRegistrationBtn;
+
+
+
 	By RemoveBtnBy = By.xpath("//button[contains(@class, 'styles-module_trashButton')]");
-	By cartProductNameBy = By.xpath("//span[contains(@class, 'styles-module_brand')]");
-	By cartProductPriceBy = By.xpath("//span[contains(@class, 'styles-module_pricePerUnit')]");
-	By cartProductsListBy = By.xpath("//li[contains(@class, 'styles-module_listItem')]");
-	By increaseBtnBy = By.xpath("//button[contains(@data-testid, 'plus-button')]"); 
-	public By cartIconWithQuantityBy = By.xpath("//div[contains(@class, 'StatusBadge-module_badge')]");	
-	
+	public By productNameBy = By.xpath("//span[contains(@class, 'styles-module_brand')]");
+	By productPriceBy = By.xpath("//span[contains(@class, 'styles-module_pricePerUnit')]");
+	By productsListBy = By.xpath("//li[contains(@class, 'styles-module_listItem')]");
+	By increaseBtnBy = By.xpath("//button[contains(@data-testid, 'plus-button')]");
+	public String emptyCartHeaderText = "Twój koszyk jest pusty";
+	By checkoutSummarySectionBy = By.xpath("//div[contains(@class, 'styles-module_summary')]");
+
 	//Methods related to shopping cart
 	
-	public void clickRemoveButtonInCartForAllProducts() {
+	public void clickRemoveButtonForAllProducts() throws InterruptedException {
 	    List<WebElement> removeButtons = driver.findElements(RemoveBtnBy);
 	    for (WebElement button : removeButtons) {
+			waitForElementToBeClickableWebElement(button);
+			Thread.sleep(1000);
 	        button.click();
 	    }
-	    waitForElementToPresentNumberOfElements(cartProductsListBy, 0);
+	    waitForElementToPresentNumberOfElements(productsListBy, 0);
 	 }
 		
 	public void clearCart() throws InterruptedException {
 		goToShoppingCart();
-		clickRemoveButtonInCartForAllProducts();
+		clickRemoveButtonForAllProducts();
 	}
 		
 	public String getTextFromHeaderElement() {
-	    return headerElement.getText();
+	    return emptyCartHeader.getText();
 	}
 	
 	public List<String> getCartProductNames() {
 	    List<String> productNames = new ArrayList<>();
-	    List<WebElement> cartProductElements = driver.findElements(cartProductNameBy);
+	    List<WebElement> cartProductElements = driver.findElements(productNameBy);
 	    for (WebElement cartProductElement : cartProductElements) {
 	        productNames.add(cartProductElement.getText());
 	    }
@@ -85,7 +98,7 @@ public class CartPage extends PageObject{
 	
 	public List<String> getCartProductPrices() {
 	    List<String> productPrices = new ArrayList<>();
-	    List<WebElement> cartProductPriceElements = driver.findElements(cartProductPriceBy);
+	    List<WebElement> cartProductPriceElements = driver.findElements(productPriceBy);
 	    for (WebElement cartProductPriceElement : cartProductPriceElements) {
 	        String fullText = cartProductPriceElement.getText();
 	        String priceOnly = fullText.replace("Cena za szt.:", "").trim();
@@ -94,33 +107,41 @@ public class CartPage extends PageObject{
 	    return productPrices;
 	}
 	
-	public String getShoppingCartValue() {
-		String cartValue = cartTotalValue.getText();
+	public String getCartValue() {
+		String cartValue = totalValue.getText();
 		return cartValue;
 	}
 
-	public String getProductQuantityInCartFromCounter() {
-		WebElement inputElement = selectedQuantityOfProductInCart;
+	public String getProductQuantityFromCounter() {
+		WebElement inputElement = selectedQuantityOfProduct;
 		String selectedQuantityOfProductInCartValue = inputElement.getAttribute("value");
 		return selectedQuantityOfProductInCartValue;
 	}
-	
-	public String getProductQuantityInCartFromIcon() {
-		return shoppingCartQuantityIcon.getText();
-	}
-	
+
 	public int getNumberOfUniqueProductsInCart() {
-		return cartProductsList.size();
+		return productsList.size();
 	}
 	
-	public void increaseNumberOfProductInCart(int quantity) {
+	public void increaseNumberOfProduct(int quantity) {
 		 WebElement addButton = driver.findElement(increaseBtnBy);
 		    for (int i = 0; i < quantity; i++) {
 		        addButton.click();
 		    }
        }
-	
-	
-	
-	
+
+	public void clickSummaryButton(){
+		waitForElementToBeClickableWebElement(summaryBtn);
+		summaryBtn.click();
+		waitForElementToAppearWebElement(summaryBtn);
+	}
+
+	public void clickBuyWithoutRegistration() {
+		clickSummaryButton();
+		waitForElementToAppear(loginPopupBy);
+		waitForElementToBeClickableWebElement(buyWithoutRegistrationBtn);
+		buyWithoutRegistrationBtn.click();
+		waitForElementToAppear(checkoutSummarySectionBy);
+	}
+
+
 }

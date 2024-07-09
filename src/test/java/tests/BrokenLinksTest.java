@@ -30,6 +30,7 @@ public class BrokenLinksTest extends BaseTest{
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
 		profilePage = PageFactory.initElements(driver, ProfilePage.class);
+		homePage.acceptCookiesInCookieBar();
     }
 	
 	
@@ -194,7 +195,7 @@ public class BrokenLinksTest extends BaseTest{
 		}
 		a.assertAll();
 	}
-	
+
 	@DataProvider
 	public Object[][] getLoginData() throws IOException
 	{

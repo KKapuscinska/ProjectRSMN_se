@@ -35,9 +35,10 @@ public class ProductCatalogue extends PageObject{
 	
 	public By productListBy = By.xpath("//section/div/div/div/section");
 	By availableToSellProductListBy = By.cssSelector(".nav-user__icon");
-	By theLowestPriceInfoBy = By.xpath("//div[contains(@class, 'tile-product__lowest-price')][2]");
+	By theLowestPriceInfoBy = By.xpath("//div[contains(@class, 'tile-product__lowest-price')]");
 	By productTitleInSearchPageBy = By.xpath("//a/div/strong");
-	By shoppingCartQuantityIconBy = By.xpath("//div[contains(@class, 'StatusBadge-module_badge')]");
+
+	public int defaultProductsPerPage = 24;
 	
 	//ProductPage
 	@FindBy(xpath = "//h1[contains(@class, 'styles-module_titleBrand')]")
@@ -48,6 +49,12 @@ public class ProductCatalogue extends PageObject{
 	public
     WebElement productPagePriceElement;
 	
+	@FindBy(xpath = "//span/button[@data-testid='add-to-fav-btn']")
+	public
+    WebElement productPageFavoritesBtn;
+
+	public By productPageFavoritesBtnBy = By.xpath("//span/button[@data-testid='add-to-fav-btn']");
+
 	//Recommendations filters
 	@FindBy(css = "button[data-testid='recommended-select-open-btn']")
 	public
@@ -71,10 +78,14 @@ public class ProductCatalogue extends PageObject{
 	@FindBy(css = "span[data-testid='filter-chip-close-feelAtmosphere']")
 	public
     WebElement closeButtonOnFeelAtmosphereFilterLabel;
+
+	@FindBy(xpath = "//span[@data-testid='feel-atmosphere-badge']")
+	public
+	WebElement feelAtmosphereLabel;
 	
 	By closeButtonOnFeelAtmosphereFilterLabelBy = By.cssSelector("span[data-testid='filter-chip-close-feelAtmosphere']");
 	By feelAtmosphereChipBy = By.cssSelector("button[data-testid='filters-chip-feelAtmosphere']");
-	By feelAtmosphereLabelBy = By.xpath("//span[@data-testid='feel-atmosphere-badge']");
+
 
 	//Promotions filters
 	@FindBy(css = "button[data-testid='promotions-select-open-btn']")
@@ -124,11 +135,13 @@ public class ProductCatalogue extends PageObject{
 	
 	//Recommendations filters methods
 	public void openRecommendedSelect() {
+		waitForElementToBeClickableWebElement(recommendedProductsSelect);
 		recommendedProductsSelect.click();
-		waitForElementToAppear(recommendedDropdownBy);
+		waitForElementToAppearWebElement(recommendedProductsSelect);
 	}
 	
 	public void submitRecommendedFilters() {
+		waitForElementToBeClickableWebElement(submitRecommendedBtn);
 		submitRecommendedBtn.click();
 		waitForElementToDisappear(recommendedDropdownBy);
 	}
@@ -145,11 +158,9 @@ public class ProductCatalogue extends PageObject{
 	}
 	
 	public void clickCloseButtonOnFeelAtmosphereFilterLabel() throws InterruptedException {
-		Thread.sleep(1000);
 		scrollToTopOfPage();
-		waitForElementToBeClicable(closeButtonOnFeelAtmosphereFilterLabelBy);
+		waitForElementToBeClickableWebElement(closeButtonOnFeelAtmosphereFilterLabel);
 		closeButtonOnFeelAtmosphereFilterLabel.click();
-		Thread.sleep(1000);
 	}
 	
 	public boolean isFeelAtmosphereChipVisibleOnProductCatalogue() {
@@ -159,7 +170,7 @@ public class ProductCatalogue extends PageObject{
 	
 	public boolean isFeelAtmosphereLabelVisibleOnProductPage() {
         try {
-            WebElement feelAtmosphereLabel = waitForElementToAppearWebElement(feelAtmosphereLabelBy);
+            waitForElementToAppearWebElement(feelAtmosphereLabel);
             return feelAtmosphereLabel.isDisplayed();
         } catch (NoSuchElementException e) {
             return false;
@@ -168,11 +179,13 @@ public class ProductCatalogue extends PageObject{
 	
 	//Promotions filters methods
 	public void openPromotionsSelect() {
+		waitForElementToBeClickableWebElement(promotionsProductsSelect);
 		promotionsProductsSelect.click();
 		waitForElementToAppear(promotionsDropdownBy);
 	}
 	
 	public void submitPromotionsFilters() {
+		waitForElementToBeClickableWebElement(submitPromotionsBtn);
 		submitPromotionsBtn.click();
 		waitForElementToDisappear(promotionsDropdownBy);
 	}
@@ -189,11 +202,10 @@ public class ProductCatalogue extends PageObject{
 	}
 	
 	public void clickCloseButtonOnMegaFilterLabel() throws InterruptedException {
-		Thread.sleep(1000);
 		scrollToTopOfPage();
-		waitForElementToBeClicable(closeButtonOnMegaFilterLabelBy);
+		waitForElementToBeClickableWebElement(closeButtonOnMegaFilterLabel);
 		closeButtonOnMegaFilterLabel.click();
-		Thread.sleep(1000);
+		waitForElementToDisappearWebElement(closeButtonOnMegaFilterLabel);
 	}
 	
 	public boolean isMegaChipVisibleOnProductCatalogue() {
@@ -213,11 +225,10 @@ public class ProductCatalogue extends PageObject{
 	}
 	
 	public void clickCloseButtonOnPromotionFilterLabel() throws InterruptedException {
-		Thread.sleep(1000);
 		scrollToTopOfPage();
-		waitForElementToBeClicable(closeButtonOnPromotionFilterLabelBy);
+		waitForElementToBeClickableWebElement(closeButtonOnPromotionFilterLabel);
 		closeButtonOnPromotionFilterLabel.click();
-		Thread.sleep(1000);
+		waitForElementToDisappearWebElement(closeButtonOnPromotionFilterLabel);
 	}
 	
 	public boolean isPromotionChipVisibleOnProductCatalogue() {
@@ -234,19 +245,24 @@ public class ProductCatalogue extends PageObject{
         return driver.findElements(availableToSellProductListBy);
     }
 	
-	public void clickToRandomProductOnPage() {
+	public void clickToRandomProductOnPage() throws InterruptedException {
 		
 		Random random = new Random();
         int randomIndex = random.nextInt(productList.size());
         WebElement randomProduct = productList.get(randomIndex);
+		waitForElementToAppearWebElement(randomProduct);
+		waitForElementToBeClickableWebElement(randomProduct);
+		//scrollToElementCenter(randomProduct);
+		Thread.sleep(500);
         randomProduct.click();
 	}
 	
-	public void addToShoppingCartFirstAvailableProductOnProductCatalogue() {
+	public void addToCartFirstAvailableProductOnProductCatalogue() {
 		waitForElementToAppear(productListBy);
 		List<WebElement> products = getAvailableToSellProductList();
 			if (products.size() > 0) {
 				WebElement firstProduct = products.get(0);
+				waitForElementToBeClickableWebElement(firstProduct);
 				firstProduct.click();
 			}	
 			waitForElementToAppear(shoppingCartQuantityIconBy);

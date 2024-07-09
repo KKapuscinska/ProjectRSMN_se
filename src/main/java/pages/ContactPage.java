@@ -51,12 +51,16 @@ WebDriver driver;
 	public By phoneInputBy = By.id("input-phone");
 	public By valiadationMessageBy = By.cssSelector(".invalid-feedback");
 	public By recaptchaBy = By.cssSelector("div[name='recaptcha']");
+	public By sendFormBtnBy = By.xpath("//span[text()='Wyślij wiadomość']");
+
 	
 	 
 	//Methods related to contactPage
 	
 	public void sendContactForm()
 	{
+		scrollToElementCenter(sendContactFormButton);
+		waitForElementToBeClickableWebElement(sendContactFormButton);
 		sendContactFormButton.click();
 	}
 	

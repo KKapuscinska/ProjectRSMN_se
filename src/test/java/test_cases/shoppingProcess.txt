@@ -2,23 +2,22 @@
 
 Preconditions:
 1. Navigate to url 'www.rossmann.pl/szukaj'
-2. Add product to the shopping cart.
+2. Add product to the cart.
+3. Go to cart
 
 
 TestCase 1 - Verify adding and removing products from the shopping cart
 addAndRemoveProductFromShoppingCart()
 	
 	1. Verify that the product is successfully added to the shopping cart
-	2. Navigate to the shopping cart
-	3. Locate and click the remove button associated with the product
-	4. Verify that the product is successfully removed from the shopping cart
+	2. Click the remove button associated with the product
+	3. Verify that the product is successfully removed from the shopping cart
 	
 	
 TestCase 2 - Verify product details in shopping cart
 verifyProductDetailsInShoppingCart()
 	
-	1. Navigate to the shopping cart
-	2. Verify that the product details (name, price) match the expected details
+	1. Verify that the product details (name, price) match the expected details in cart
 	
 	
 TestCase 3 -  Increase product quantity in shopping cart and verify cart value change
@@ -26,5 +25,30 @@ verifyTotalPriceAfterChangingQuantityInShoppingCart()
 	
 	1. Increase the quantity of the product
 	2. Verify that the quantity and prices are updated correctly in the shopping cart
+
+
+TestCase 4 -  Verify that the user can log in from the popup in cart and proceed to checkout.
+loginAndProceedToCheckoutFromPopup()
+
+
+TestCase 5 -  Verify that the products remain in the cart after logging out and logging back in.
+verifyCartPersistenceAfterLogout
+
+
+TestCase 6 -  Verify that the user can proceed to checkout without registration.
+proceedToCheckoutWithoutRegistration()
+
+
+TestCase 7 -  Verify that the order details in the final step match the cart details.
+verifyOrderDetailsInFinalStep()
+
+
+TestCase 8 -  Verify the number and responsiveness of delivery methods at checkout.
+verifyDeliveryOptionsAtCheckout()
+
+
+TestCase 9 -  Verify validation message appears when no delivery method is selected.
+verifyValidationForNoDeliveryOption()
+
 
 

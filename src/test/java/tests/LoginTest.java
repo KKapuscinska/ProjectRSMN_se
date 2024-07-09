@@ -25,6 +25,7 @@ public class LoginTest extends BaseTest {
     public void setup() throws IOException {
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
+		homePage.acceptCookiesInCookieBar();
     }
 	
 	
@@ -88,8 +89,8 @@ public class LoginTest extends BaseTest {
 	}
 	
 	@Test(dataProvider = "invalidData", retryAnalyzer=Retry.class)
-	@Description("User cannot log in with an incorrect creddentials.")
-	public void failureLogin(HashMap<String, String> formData) throws InterruptedException {
+	@Description("User cannot log in with an incorrect credentials.")
+	public void failureLogin(HashMap<String, String> formData) {
 
 		homePage.goToLoginPage();
 
