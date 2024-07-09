@@ -284,7 +284,7 @@ public class ShoppingProcessTest extends BaseTest {
 	@DataProvider
 	public Object[][] getPlainUserLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\PlainUser.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\login\\PlainUser.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 }

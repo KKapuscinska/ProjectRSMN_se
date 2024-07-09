@@ -199,7 +199,7 @@ public class BrokenLinksTest extends BaseTest{
 	@DataProvider
 	public Object[][] getLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\ValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\login\\ValidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 

@@ -137,21 +137,21 @@ public class ProfileTest extends BaseTest{
 	@DataProvider
 	public Object[][] getBasicUserLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\BasicUser.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\login\\BasicUser.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
 	@DataProvider
 	public Object[][] getClubUserLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\ClubUser.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\login\\ClubUser.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
 	@DataProvider
 	public Object[][] getPlainUserLoginData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\login\\PlainUser.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\login\\PlainUser.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 }

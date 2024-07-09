@@ -128,35 +128,35 @@ public class ContactPageTest extends BaseTest{
 	@DataProvider(name = "invalidNameData")
 	public Object[][] getInvalidNameData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\contactform\\InvalidNameData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\contactform\\InvalidNameData.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
 	@DataProvider(name = "invalidEmailData")
 	public Object[][] getInvalidEmailData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\contactform\\InvalidEmailData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\contactform\\InvalidEmailData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}, {data.get(2)}};
 	}
 
 	@DataProvider(name = "invalidPhoneData")
 	public Object[][] getInvalidPhoneData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\contactform\\InvalidPhoneData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\contactform\\InvalidPhoneData.json");
 		return new Object[][]	{{data.get(0)}};
 	}
 	
 	@DataProvider(name = "invalidMessageData")
 	public Object[][] getInvalidMessageData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\contactform\\InvalidMessageData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\contactform\\InvalidMessageData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}};
 	}
 	
 	@DataProvider(name = "validData")
 	public Object[][] getValidData() throws IOException
 	{
-		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\test\\testdata\\contactform\\ValidData.json");
+		List<HashMap<String, String>> data = getJsonDataToMap(System.getProperty("user.dir")+"\\src\\main\\resources\\testdata\\contactform\\ValidData.json");
 		return new Object[][]	{{data.get(0)}, {data.get(1)}};
 	}
 }
