@@ -13,38 +13,33 @@ import org.testng.annotations.Test;
 import jdk.jfr.Description;
 import main.java.pages.HomePage;
 import main.java.pages.LoginPage;
-import test.java.basetest.BaseTest;
 import test.java.listeners.Retry;
 
 public class LoginTest extends BaseTest {
-
-	HomePage homePage;
 	LoginPage loginPage;
 	
 	@BeforeClass(alwaysRun = true)
     public void setup() throws IOException {
-		homePage = PageFactory.initElements(driver, HomePage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
-		homePage.acceptCookiesInCookieBar();
+		loginPage.acceptCookiesInCookieBar();
     }
-	
 	
 	@Test(dataProvider = "validData", groups="smoke")
 	@Description("User can successfully log in and log out via a popup login window.")
 	public void successfulLoginViaPopup(HashMap<String, String> formData) throws InterruptedException, IOException {
 
-		homePage.goToHomePage();
-		homePage.hoverOverUserAccountLinkAndClickLogin();
+		loginPage.goToHomePage();
+		loginPage.hoverOverUserAccountLinkAndClickLogin();
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
-		homePage.clickAccountButtonIcon();
+		loginPage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_PROFILE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
-		homePage.logout();
-		homePage.clickAccountButtonIcon();
+		loginPage.logout();
+		loginPage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 	}
 
@@ -52,20 +47,20 @@ public class LoginTest extends BaseTest {
 	@Description("User can successfully log in and log out via the login page.")
 	public void successfulLoginViaPage(HashMap<String, String> formData) throws InterruptedException {
 
-		homePage.clickAccountButtonIcon();
+		loginPage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 
 		loginPage.loginByCorrectCredentials(formData.get("username"), formData.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_PROFILE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_PROFILE_RELATIVE),
 				"Expected current URL to be profile page.");
 
-		homePage.logout();
-		homePage.clickAccountButtonIcon();
+		loginPage.logout();
+		loginPage.clickAccountButtonIcon();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 	}
 
@@ -73,9 +68,9 @@ public class LoginTest extends BaseTest {
 	@Description("Verify password visibility functionality.")
 	public void verifyPasswordVisibilityFunctionality() throws InterruptedException {
 
-		homePage.goToLoginPage();
+		loginPage.goToLoginPage();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_LOGIN_PAGE_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(loginPage.URL_LOGIN_PAGE_RELATIVE),
 				"Expected current URL to be login page.");
 
 		Assert.assertEquals(driver.findElement(loginPage.passwordInputBy).getAttribute("type"), "password", 
@@ -92,8 +87,7 @@ public class LoginTest extends BaseTest {
 	@Description("User cannot log in with an incorrect credentials.")
 	public void failureLogin(HashMap<String, String> formData) {
 
-		homePage.goToLoginPage();
-
+		loginPage.goToLoginPage();
 		loginPage.logInByIncorrectCredentials(formData.get("username"), formData.get("password"));
 
 		Assert.assertEquals(driver

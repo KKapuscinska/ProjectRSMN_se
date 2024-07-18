@@ -32,7 +32,7 @@ loginAndProceedToCheckoutFromPopup()
 
 
 TestCase 5 -  Verify that the products remain in the cart after logging out and logging back in.
-verifyCartPersistenceAfterLogout
+verifyCartPersistenceAfterLogout()
 
 
 TestCase 6 -  Verify that the user can proceed to checkout without registration.

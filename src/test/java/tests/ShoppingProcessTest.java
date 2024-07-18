@@ -3,9 +3,8 @@ package test.java.tests;
 import jdk.jfr.Description;
 import main.java.pages.*;
 import org.testng.annotations.DataProvider;
-import test.java.basetest.BaseTest;
+
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.List;
 import org.openqa.selenium.WebElement;
@@ -16,8 +15,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class ShoppingProcessTest extends BaseTest {
-
-	HomePage homePage;
 	ProductCatalogue productCatalogue;
 	CartPage cartPage;
 	LoginPage loginPage;
@@ -25,35 +22,32 @@ public class ShoppingProcessTest extends BaseTest {
 
 	@BeforeClass(alwaysRun = true)
 	public void setup() throws IOException {
-		homePage = PageFactory.initElements(driver, HomePage.class);
 		productCatalogue = PageFactory.initElements(driver, ProductCatalogue.class);
 		cartPage = PageFactory.initElements(driver, CartPage.class);
 		loginPage = PageFactory.initElements(driver, LoginPage.class);
 		checkoutPage = PageFactory.initElements(driver, CheckoutPage.class);
-		homePage.acceptCookiesInCookieBar();
+		productCatalogue.acceptCookiesInCookieBar();
 	}
 
 	@BeforeMethod(alwaysRun = true)
 	public void beforeTest() {
-
-		homePage.goToProductCataloguePage();
+		productCatalogue.goToProductCataloguePage();
 		productCatalogue.addToCartFirstAvailableProductOnProductCatalogue();
-		homePage.goToShoppingCart();
+		productCatalogue.goToShoppingCart();
 	}
 
 	@Test(groups="smoke")
 	@Description("Verify that the user can successfully add a product to the shopping cart and remove it using the remove button.")
 	public void addAndRemoveProductFromShoppingCart() throws InterruptedException {
 
-		Assert.assertEquals(homePage.getProductQuantityFromIcon(), "1",
+		Assert.assertEquals(productCatalogue.getProductQuantityFromIcon(), "1",
 				"Expected 1 product in the cart icon.");
 
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1,
 				"Expected 1 product in the cart.");
 
 		cartPage.clickRemoveButtonForAllProducts();
-
-		homePage.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
+		productCatalogue.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
 
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 0,
 				"Expected 0 products in the cart.");
@@ -73,7 +67,7 @@ public class ShoppingProcessTest extends BaseTest {
 		List<String> cartProductPrices = cartPage.getCartProductPrices();
 
 		cartPage.productNameElement.click();
-		homePage.waitForElementToAppearWebElement(productCatalogue.productPageNameElement);
+		productCatalogue.waitForElementToAppearWebElement(productCatalogue.productPageNameElement);
 
 		WebElement productNameElement = productCatalogue.productPageNameElement;
 		String productName = productNameElement.getText();
@@ -96,6 +90,7 @@ public class ShoppingProcessTest extends BaseTest {
 	public void verifyTotalPriceAfterChangingQuantityInShoppingCart() throws InterruptedException {
 
 		Thread.sleep(1000);
+
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1,
 				"Expected 1 product in the cart.");
 
@@ -112,7 +107,6 @@ public class ShoppingProcessTest extends BaseTest {
 
 		String productQuantityText = cartPage.getProductQuantityFromCounter();
 		int productQuantityValue = Integer.parseInt(productQuantityText);
-
 
 		Assert.assertEquals(cartPage.getProductQuantityFromCounter(),
 				productQuantityText);
@@ -139,27 +133,27 @@ public class ShoppingProcessTest extends BaseTest {
 		cartPage.clickSummaryButton();
 		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CART_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CART_RELATIVE),
 				"Expected current URL to be cart page.");
 
 		cartPage.clickSummaryButton();
-		homePage.waitForElementToAppear(checkoutPage.deliverySectionBy);
+		productCatalogue.waitForElementToAppear(checkoutPage.deliverySectionBy);
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CHECKOUT_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CHECKOUT_RELATIVE),
 				"Expected current URL to be checkout page.");
 
 		checkoutPage.clickGoBackBtn();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CART_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CART_RELATIVE),
 				"Expected current URL to be cart page.");
 
 		cartPage.clickRemoveButtonForAllProducts();
-		homePage.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
+		productCatalogue.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
 
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 0,
 				"Expected 0 products in the cart.");
 
-		homePage.logout();
+		productCatalogue.logout();
 	}
 
 	@Test(dataProvider = "getPlainUserLoginData")
@@ -169,7 +163,7 @@ public class ShoppingProcessTest extends BaseTest {
 		cartPage.clickSummaryButton();
 		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CART_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CART_RELATIVE),
 				"Expected current URL to be cart page.");
 
 		Thread.sleep(1000);
@@ -177,23 +171,22 @@ public class ShoppingProcessTest extends BaseTest {
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1,
 				"Expected 1 products in the cart.");
 
-		Assert.assertEquals(homePage.getProductQuantityFromIcon(), "1",
+		Assert.assertEquals(productCatalogue.getProductQuantityFromIcon(), "1",
 				"Expected 1 product in the cart icon.");
 
-		homePage.logout();
-		homePage.goToLoginPage();
+		loginPage.logout();
+		loginPage.goToLoginPage();
 		loginPage.loginByCorrectCredentials(input.get("username"), input.get("password"));
-		homePage.goToShoppingCart();
+		productCatalogue.goToShoppingCart();
 
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 1,
 				"Expected 1 products in the cart.");
 
-		Assert.assertEquals(homePage.getProductQuantityFromIcon(), "1",
+		Assert.assertEquals(productCatalogue.getProductQuantityFromIcon(), "1",
 				"Expected 1 product in the cart icon.");
 
 		cartPage.clickRemoveButtonForAllProducts();
-
-		homePage.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
+		productCatalogue.waitForElementToAppearWebElement(cartPage.emptyCartHeader);
 
 		Assert.assertEquals(cartPage.getNumberOfUniqueProductsInCart(), 0,
 				"Expected zero products in the cart.");
@@ -206,7 +199,7 @@ public class ShoppingProcessTest extends BaseTest {
 
 		cartPage.clickBuyWithoutRegistration();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CHECKOUT_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CHECKOUT_RELATIVE),
 				"Expected current URL to be checkout page.");
 
 		checkoutPage.clickGoBackBtn();
@@ -221,7 +214,7 @@ public class ShoppingProcessTest extends BaseTest {
 
 		cartPage.clickBuyWithoutRegistration();
 
-		Assert.assertTrue(driver.getCurrentUrl().contains(homePage.URL_CHECKOUT_RELATIVE),
+		Assert.assertTrue(driver.getCurrentUrl().contains(productCatalogue.URL_CHECKOUT_RELATIVE),
 				"Expected current URL to be checkout page.");
 
 		List<String> checkoutProductNames = cartPage.getCartProductNames();
@@ -260,8 +253,8 @@ public class ShoppingProcessTest extends BaseTest {
 
 		cartPage.clickBuyWithoutRegistration();
 		checkoutPage.clickOrderButton();
+		productCatalogue.waitForElementToAppearWebElement(checkoutPage.sectionTopBarErrorMsg);
 
-		homePage.waitForElementToAppearWebElement(checkoutPage.sectionTopBarErrorMsg);
 		Assert.assertEquals(checkoutPage.sectionTopBarErrorMsg.getText(), checkoutPage.deliveryValidationErrorMsg,
 				"Expected specific error validation message.");
 
@@ -275,11 +268,9 @@ public class ShoppingProcessTest extends BaseTest {
 	@Description("Verify validation message appears when customer details are missing.")
 	public void verifyValidationForMissingCustomerDetails() {
 	}
-
 	@Description("Verify validation message appears when no payment method is selected.")
 	public void verifyValidationForMissingPaymentMethod() {
 	}
-
 
 	@DataProvider
 	public Object[][] getPlainUserLoginData() throws IOException

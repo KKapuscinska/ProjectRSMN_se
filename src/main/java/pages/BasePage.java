@@ -1,4 +1,4 @@
-package main.java.pageobject;
+package main.java.pages;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,12 +14,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 
-public class PageObject {
+public class BasePage {
 
 	WebDriver driver;
 	Actions actions;
 	
-	public PageObject(WebDriver driver) { 
+	public BasePage(WebDriver driver) {
 		this.driver = driver;
 		this.actions = new Actions(driver);
 	}

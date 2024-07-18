@@ -1,0 +1,26 @@
+# ProfileTest:
+
+Preconditions:
+1. Navigate to url 'www.rossmann.pl/szukaj'
+2. Go to Login Page
+
+
+TestCase 1 -  User verifies empty purchase history tab.
+lviewPurchaseHistoryTabNoHistory()
+
+
+TestCase 2 -  VUser checks for the presence of orders upon accessing the purchase history tab.
+viewPurchaseHistoryTabWithHistory()
+
+
+TestCase 3 -  User verifies empty favourite products tab.
+viewFavoriteProductsTabWithoutFavorites()
+
+
+TestCase 4 -  User navigates from the empty favorite products tab to the products page, adds and deletes favorite product.
+addDeleteFavoriteProductFromFavTab()
+
+
+TestCase 5 -  User can enable 'Show only favorite products on sale' feature.
+enableShowOnlyFavoritesOnSale()
+

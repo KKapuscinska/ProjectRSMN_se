@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import main.java.pageobject.PageObject;
-
-public class ContactPage extends PageObject{
+public class ContactPage extends BasePage {
 
 WebDriver driver;
 	

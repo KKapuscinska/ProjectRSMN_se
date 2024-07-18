@@ -5,10 +5,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.PageFactory;
 
-import main.java.pageobject.PageObject;
 
-
-public class HomePage extends PageObject{
+public class HomePage extends BasePage {
 
 	WebDriver driver;
     Actions actions;

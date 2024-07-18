@@ -8,9 +8,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import main.java.pageobject.PageObject;
-
-public class LoginPage extends PageObject{
+public class LoginPage extends BasePage {
 
 	WebDriver driver;
 	Actions actions;

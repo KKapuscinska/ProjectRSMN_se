@@ -10,23 +10,18 @@ import java.util.List;
 import jdk.jfr.Description;
 import main.java.pages.ContactPage;
 import main.java.pages.HomePage;
-import test.java.basetest.BaseTest;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import test.java.listeners.Retry;
 
 public class ContactPageTest extends BaseTest{
-
 	ContactPage contactPage;
-	HomePage homePage;
-	
 	@BeforeClass
     public void setup() throws IOException {
-		homePage = PageFactory.initElements(driver, HomePage.class);
 		contactPage = PageFactory.initElements(driver, ContactPage.class);
-		homePage.goToContactPage();
-		homePage.acceptCookiesInCookieBar();
+		contactPage.goToContactPage();
+		contactPage.acceptCookiesInCookieBar();
     }
 	
 	@Test(dataProvider = "invalidNameData", retryAnalyzer= Retry.class)
@@ -37,7 +32,6 @@ public class ContactPageTest extends BaseTest{
 		contactPage.fillLastName(formData.get("lastName"));
 		contactPage.sendContactForm();
 
-		// Checking the validation message
 		Assert.assertEquals(driver
 		        .findElement(with(contactPage.valiadationMessageBy)
 		        .below(driver.findElement(contactPage.nameInputBy)))
@@ -58,7 +52,6 @@ public class ContactPageTest extends BaseTest{
 		contactPage.fillEmail(formData.get("email"));
 	    contactPage.sendContactForm();
 
-	    // Checking the validation message
 	    Assert.assertEquals(driver
 	            .findElement(with(contactPage.valiadationMessageBy)
 	            .below(driver.findElement(contactPage.emailInputBy)))
@@ -73,7 +66,6 @@ public class ContactPageTest extends BaseTest{
 	    contactPage.fillPhone(formData.get("phoneNumber"));
 	    contactPage.sendContactForm();
 
-	    // Checking the validation message
 	    Assert.assertEquals(driver
 	            .findElement(with(contactPage.valiadationMessageBy)
 	            .below(driver.findElement(contactPage.phoneInputBy)))
@@ -84,16 +76,13 @@ public class ContactPageTest extends BaseTest{
 	@Test(dataProvider = "invalidMessageData")
 	@Description("Verify Message field validation.")
 	public void contactFormValidationMessage(HashMap<String, String> formData) {
-		
-	    // Validating the maximum length of the message field
+
 	    Assert.assertEquals(contactPage.messageInput.getAttribute("maxlength"), "5000",
 	            "Expected maximum character limit for the message field.");
 
 	    contactPage.fillMessage(formData.get("message"));
-
 	    contactPage.sendContactForm();
 
-	    // Checking the validation message
 	    Assert.assertEquals(driver
 	            .findElement(with(contactPage.valiadationMessageBy)
 	            .below(driver.findElement(contactPage.messageInputBy)))
@@ -112,7 +101,6 @@ public class ContactPageTest extends BaseTest{
 		contactPage.fillMessage(formData.get("message"));
 		contactPage.sendContactForm();
 
-		// Checking the validation message - Captcha
 		Assert.assertEquals(driver
 				.findElement(with(contactPage.valiadationMessageBy)
 		        .below(driver.findElement(contactPage.recaptchaBy)))

@@ -1,4 +1,4 @@
-package test.java.basetest;
+package test.java.tests;
 
 import java.io.File;
 import java.io.FileInputStream;
